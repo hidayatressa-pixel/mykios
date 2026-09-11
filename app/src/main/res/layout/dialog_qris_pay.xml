@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:padding="24dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="QRIS DINAMIS"
+        android:textAppearance="?attr/textAppearanceTitleLarge"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/tvQrisAmount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="Total: Rp 0"
+        android:textAppearance="?attr/textAppearanceBodyLarge"
+        android:textColor="@color/primary" />
+
+    <ImageView
+        android:id="@+id/ivGeneratedQris"
+        android:layout_width="280dp"
+        android:layout_height="280dp"
+        android:layout_marginTop="20dp"
+        android:background="@android:color/white"
+        android:padding="8dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:gravity="center"
+        android:text="Tunjukkan kode ini ke pelanggan.\nSaldo akan otomatis masuk ke Dompet Digital."
+        android:textAppearance="?attr/textAppearanceLabelMedium"
+        android:alpha="0.7" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnKonfirmasiBayar"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:layout_marginTop="24dp"
+        android:text="KONFIRMASI PEMBAYARAN"
+        app:cornerRadius="12dp" />
+
+</LinearLayout>

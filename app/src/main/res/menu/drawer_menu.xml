@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_home"
+            android:icon="@android:drawable/ic_menu_today"
+            android:title="Dashboard" />
+        <item
+            android:id="@+id/nav_stok"
+            android:icon="@android:drawable/ic_input_add"
+            android:title="Manajemen Stok" />
+        <item
+            android:id="@+id/nav_hutang"
+            android:icon="@android:drawable/ic_menu_agenda"
+            android:title="Catatan Hutang" />
+        <item
+            android:id="@+id/nav_laporan"
+            android:icon="@android:drawable/ic_menu_sort_by_size"
+            android:title="Laporan Penjualan" />
+        <item
+            android:id="@+id/nav_pengeluaran"
+            android:icon="@android:drawable/ic_menu_recent_history"
+            android:title="Catat Pengeluaran" />
+        <item
+            android:id="@+id/nav_ai"
+            android:icon="@android:drawable/ic_menu_info_details"
+            android:title="AI Insights" />
+    </group>
+    <item android:title="Lainnya">
+        <menu>
+            <item
+                android:id="@+id/nav_settings"
+                android:icon="@android:drawable/ic_menu_preferences"
+                android:title="Pengaturan" />
+            <item
+                android:id="@+id/nav_logout"
+                android:icon="@android:drawable/ic_lock_power_off"
+                android:title="Keluar" />
+        </menu>
+    </item>
+</menu>

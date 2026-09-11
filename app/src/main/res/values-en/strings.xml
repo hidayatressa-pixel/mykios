@@ -1,0 +1,33 @@
+<resources>
+    <string name="app_name">My Kios</string>
+    <string name="welcome_title">Welcome to My Kios</string>
+    <string name="welcome_subtitle">Manage your stall &amp; business more easily</string>
+    <string name="register_account">Account Registration</string>
+    <string name="register_instruction">Complete the following information to start</string>
+    <string name="shop_name_hint">Shop / Stall Name</string>
+    <string name="owner_name_hint">Owner Name</string>
+    <string name="business_category_hint">Business Category</string>
+    <string name="safe_trusted">Safe &amp; Trusted</string>
+    <string name="security_desc">Your business data will be safe and only used for My Kios app purposes.</string>
+    <string name="btn_start_manage">Start Managing Stall</string>
+    <string name="already_have_account">Already have an account? Login here</string>
+    <string name="selection_count_format">%d Selected</string>
+    <string name="title_settings">Settings</string>
+    <string name="section_profile">User Profile</string>
+    <string name="hint_email">Email Address</string>
+    <string name="hint_shop_address">Complete Stall Address</string>
+    <string name="btn_save_profile">Save Profile</string>
+    <string name="section_business">Business Information</string>
+    <string name="label_shop_info">Store Information</string>
+    <string name="label_cashier_profile">Cashier Profile</string>
+    <string name="section_display">Display</string>
+    <string name="label_dark_mode">Dark Theme</string>
+    <string name="section_language">Language</string>
+    <string name="section_data_asset">Data &amp; Asset</string>
+    <string name="label_user_asset">User Asset</string>
+    <string name="section_security">Security</string>
+    <string name="label_set_pin">Set Access PIN</string>
+    <string name="section_backup">Backup &amp; Restore</string>
+    <string name="label_cloud_sync">Cloud Sync (Google Drive)</string>
+    <string name="label_export_csv">Export Data to CSV</string>
+</resources>
