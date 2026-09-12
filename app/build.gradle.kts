@@ -69,10 +69,11 @@ android {
     }
 }
 
-// Export Room schemas so database changes can be reviewed and migrated safely.
-ksp {
-    arg("room.schemaLocation", "$projectDir/schemas")
-}
+// KSP tracing note:
+// Room schema export is temporarily disabled here to isolate the
+// JsonDecodingException/EOF failure seen during kspFreeReleaseKotlin.
+// The committed v5 schema remains in app/schemas and will be re-enabled
+// after the processor itself is proven healthy.
 
 dependencies {
     implementation(libs.androidx.core.ktx)
