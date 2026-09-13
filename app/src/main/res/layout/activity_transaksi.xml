@@ -3,43 +3,65 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?attr/colorSurface">
+    android:background="@color/background">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?attr/colorSurface"
+        android:background="@color/brand_navy"
         app:elevation="0dp">
 
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            app:title="Kasir Digital"
-            app:navigationIcon="@android:drawable/ic_menu_revert" />
-
+            android:layout_height="64dp"
+            app:navigationIcon="@android:drawable/ic_menu_revert"
+            app:navigationIconTint="@color/white"
+            app:title="Transaksi Baru"
+            app:titleTextColor="@color/white" />
     </com.google.android.material.appbar.AppBarLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:padding="16dp"
         android:focusable="true"
         android:focusableInTouchMode="true"
+        android:orientation="vertical"
+        android:padding="16dp"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <!-- Search with Blue Focus -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Pilih barang"
+            android:textColor="@color/text_primary"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="3dp"
+            android:layout_marginBottom="12dp"
+            android:text="Cari nama, kode, atau scan barcode"
+            android:textColor="@color/text_secondary"
+            android:textSize="12sp" />
+
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/tilSearch"
             style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Cari atau Scan Barang"
-            app:startIconDrawable="@android:drawable/ic_menu_search"
-            app:endIconMode="custom"
+            app:boxBackgroundColor="@color/white"
+            app:boxCornerRadiusBottomEnd="16dp"
+            app:boxCornerRadiusBottomStart="16dp"
+            app:boxCornerRadiusTopEnd="16dp"
+            app:boxCornerRadiusTopStart="16dp"
+            app:boxStrokeColor="@color/primary"
             app:endIconDrawable="@android:drawable/ic_menu_camera"
-            app:boxStrokeColor="@color/primary">
+            app:endIconMode="custom"
+            app:startIconDrawable="@android:drawable/ic_menu_search">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/searchBarang"
@@ -48,71 +70,80 @@
                 android:inputType="text" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <!-- Product List Card -->
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="12dp"
             android:layout_weight="1"
-            app:cardCornerRadius="16dp"
-            app:cardElevation="2dp"
-            app:strokeWidth="0dp">
+            app:cardBackgroundColor="@color/white"
+            app:cardCornerRadius="20dp"
+            app:cardElevation="0dp"
+            app:strokeColor="@color/outline_soft"
+            app:strokeWidth="1dp">
 
             <ListView
                 android:id="@+id/listBarang"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:divider="@android:color/transparent"
-                android:dividerHeight="0dp" />
+                android:clipToPadding="false"
+                android:divider="@color/outline_soft"
+                android:dividerHeight="1dp"
+                android:paddingVertical="4dp" />
         </com.google.android.material.card.MaterialCardView>
 
-        <!-- Payment Section with Gradient and Total -->
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            app:cardCornerRadius="20dp"
-            app:cardElevation="4dp">
+            android:layout_marginTop="12dp"
+            app:cardBackgroundColor="@color/white"
+            app:cardCornerRadius="22dp"
+            app:cardElevation="3dp"
+            app:strokeColor="@color/outline_soft"
+            app:strokeWidth="1dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="20dp">
+                android:padding="18dp">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="TOTAL PEMBAYARAN"
-                    android:textAppearance="?attr/textAppearanceLabelLarge"
-                    android:textColor="@color/primary"
+                    android:letterSpacing="0.08"
+                    android:text="TOTAL"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="10sp"
                     android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/totalHarga"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Rp.0"
-                    android:textColor="@color/primary"
-                    android:textAppearance="?attr/textAppearanceHeadlineLarge"
+                    android:layout_marginTop="2dp"
+                    android:text="Rp 0"
+                    android:textColor="@color/brand_navy"
+                    android:textSize="30sp"
                     android:textStyle="bold" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginTop="8dp"
-                    android:gravity="center_vertical">
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal">
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/tilDiskon"
-                        style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                        style="@style/Widget.Material3.TextInputLayout.OutlinedBox.Dense"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:hint="Diskon (Rp)"
-                        app:prefixText="Rp.">
-
+                        android:hint="Diskon"
+                        app:boxCornerRadiusBottomEnd="14dp"
+                        app:boxCornerRadiusBottomStart="14dp"
+                        app:boxCornerRadiusTopEnd="14dp"
+                        app:boxCornerRadiusTopStart="14dp"
+                        app:prefixText="Rp ">
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/etDiskon"
                             android:layout_width="match_parent"
@@ -123,14 +154,17 @@
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/tilTunai"
-                        style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                        style="@style/Widget.Material3.TextInputLayout.OutlinedBox.Dense"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
                         android:layout_marginStart="8dp"
+                        android:layout_weight="1"
                         android:hint="Tunai"
-                        app:prefixText="Rp.">
-
+                        app:boxCornerRadiusBottomEnd="14dp"
+                        app:boxCornerRadiusBottomStart="14dp"
+                        app:boxCornerRadiusTopEnd="14dp"
+                        app:boxCornerRadiusTopStart="14dp"
+                        app:prefixText="Rp ">
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/etTunai"
                             android:layout_width="match_parent"
@@ -144,22 +178,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:text="Kembalian: Rp.0"
-                    android:textAppearance="?attr/textAppearanceTitleMedium"
+                    android:text="Kembalian: Rp 0"
                     android:textColor="@color/success"
+                    android:textSize="14sp"
                     android:textStyle="bold" />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginVertical="12dp"
-                    android:background="?attr/colorOutlineVariant" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Metode Pembayaran"
-                    android:textAppearance="?attr/textAppearanceLabelMedium" />
 
                 <RadioGroup
                     android:id="@+id/metodeBayar"
@@ -167,55 +189,37 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:orientation="horizontal">
-
                     <com.google.android.material.radiobutton.MaterialRadioButton
                         android:id="@+id/rbTunai"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:checked="true"
-                        android:text="CASH" />
-
+                        android:text="Cash" />
                     <com.google.android.material.radiobutton.MaterialRadioButton
                         android:id="@+id/rbQris"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="QRIS" />
-
                     <com.google.android.material.radiobutton.MaterialRadioButton
                         android:id="@+id/rbHutang"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="HUTANG" />
+                        android:text="Hutang" />
                 </RadioGroup>
 
-                <!-- Gradient Process Button -->
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnSimpan"
-                    style="@style/Widget.Material3.Button"
                     android:layout_width="match_parent"
-                    android:layout_height="60dp"
-                    android:layout_marginTop="16dp"
-                    android:text="PROSES TRANSAKSI"
+                    android:layout_height="56dp"
+                    android:layout_marginTop="12dp"
+                    android:text="Proses Transaksi"
+                    android:textAllCaps="false"
                     android:textColor="@color/white"
+                    android:textSize="15sp"
                     android:textStyle="bold"
-                    app:backgroundTint="@null"
-                    android:background="@drawable/gradient_accent"
+                    app:backgroundTint="@color/primary"
                     app:cornerRadius="16dp" />
-
-                <!-- Footer Brand -->
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:gravity="center"
-                    android:text="my kios powered by @afterproject2026"
-                    android:textAppearance="?attr/textAppearanceLabelSmall"
-                    android:textColor="?attr/colorOnSurfaceVariant"
-                    android:alpha="0.6" />
-
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
-
     </LinearLayout>
-
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
