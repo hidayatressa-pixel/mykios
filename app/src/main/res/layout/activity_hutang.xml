@@ -1,85 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <com.google.android.material.appbar.AppBarLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <com.google.android.material.appbar.MaterialToolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            app:title="Catatan Hutang"
-            app:navigationIcon="@android:drawable/ic_menu_revert" />
-
-    </com.google.android.material.appbar.AppBarLayout>
-
-    <androidx.core.widget.NestedScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
-        <LinearLayout
-            android:id="@+id/containerHutang"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <ListView
-                android:id="@+id/listHutang"
-                android:layout_width="match_parent"
-                android:layout_height="400dp"
-                android:divider="@android:color/transparent"
-                android:dividerHeight="0dp"
-                android:paddingTop="8dp" />
-
-            <LinearLayout
-                android:id="@+id/emptyStateContainer"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:padding="24dp">
-
-                <TextView
-                    android:id="@+id/emptyStateIcon"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="📒"
-                    android:textSize="80sp" />
-
-                <TextView
-                    android:id="@+id/emptyStateTitle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:text="Belum Ada Catatan Hutang"
-                    android:textAppearance="?attr/textAppearanceTitleLarge" />
-
-                <TextView
-                    android:id="@+id/emptyStateDesc"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:gravity="center"
-                    android:text="Catatan hutang pelanggan akan muncul di sini untuk memudahkan penagihan."
-                    android:textAppearance="?attr/textAppearanceBodyMedium"
-                    android:textColor="?attr/colorOnSurfaceVariant" />
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btnTambahHutang"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="32dp"
-                    android:text="Tambah Catatan Baru" />
-
-                <include layout="@layout/footer_brand" />
-
-            </LinearLayout>
-        </LinearLayout>
-    </androidx.core.widget.NestedScrollView>
-
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="match_parent" android:layout_height="match_parent" android:background="@color/background">
+<com.google.android.material.appbar.AppBarLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:background="@color/brand_navy" app:elevation="0dp"><com.google.android.material.appbar.MaterialToolbar android:id="@+id/toolbar" android:layout_width="match_parent" android:layout_height="68dp" app:title="Catatan Hutang" app:subtitle="Pantau piutang pelanggan" app:titleTextColor="@color/white" app:subtitleTextColor="#AFC3E8" app:navigationIcon="@drawable/ic_nav_back" app:navigationIconTint="@color/white"/></com.google.android.material.appbar.AppBarLayout>
+<androidx.core.widget.NestedScrollView android:layout_width="match_parent" android:layout_height="match_parent" android:fillViewport="true" app:layout_behavior="@string/appbar_scrolling_view_behavior"><LinearLayout android:id="@+id/containerHutang" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="16dp">
+<com.google.android.material.card.MaterialCardView android:layout_width="match_parent" android:layout_height="wrap_content" app:cardBackgroundColor="@color/primaryContainer" app:cardCornerRadius="20dp" app:cardElevation="0dp"><LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="center_vertical" android:orientation="horizontal" android:padding="16dp"><ImageView android:layout_width="46dp" android:layout_height="46dp" android:background="@drawable/bg_icon_soft" android:padding="11dp" android:src="@drawable/ic_nav_transactions" app:tint="@color/primary"/><LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_marginStart="14dp" android:layout_weight="1" android:orientation="vertical"><TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Piutang Pelanggan" android:textColor="@color/onPrimaryContainer" android:textSize="15sp" android:textStyle="bold"/><TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="2dp" android:text="Catat, pantau, dan selesaikan pembayaran dengan rapi." android:textColor="@color/text_secondary" android:textSize="11sp"/></LinearLayout></LinearLayout></com.google.android.material.card.MaterialCardView>
+<ListView android:id="@+id/listHutang" android:layout_width="match_parent" android:layout_height="420dp" android:layout_marginTop="10dp" android:background="@android:color/transparent" android:divider="@android:color/transparent" android:dividerHeight="6dp" android:paddingBottom="16dp"/>
+<LinearLayout android:id="@+id/emptyStateContainer" android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="center" android:orientation="vertical" android:paddingHorizontal="24dp" android:paddingTop="44dp" android:paddingBottom="24dp"><ImageView android:id="@+id/emptyStateIcon" android:layout_width="76dp" android:layout_height="76dp" android:background="@drawable/bg_icon_soft" android:padding="19dp" android:src="@drawable/ic_nav_transactions" app:tint="@color/primary"/><TextView android:id="@+id/emptyStateTitle" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="18dp" android:text="Belum Ada Catatan Hutang" android:textColor="@color/text_primary" android:textSize="20sp" android:textStyle="bold"/><TextView android:id="@+id/emptyStateDesc" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="8dp" android:gravity="center" android:text="Catatan hutang pelanggan akan muncul di sini untuk membantu proses penagihan." android:textColor="@color/text_secondary" android:textSize="13sp"/><com.google.android.material.button.MaterialButton android:id="@+id/btnTambahHutang" android:layout_width="match_parent" android:layout_height="52dp" android:layout_marginTop="26dp" android:text="Tambah Catatan Baru" android:textAllCaps="false" app:cornerRadius="16dp" app:icon="@drawable/ic_nav_add"/><include layout="@layout/footer_brand"/></LinearLayout>
+</LinearLayout></androidx.core.widget.NestedScrollView>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
