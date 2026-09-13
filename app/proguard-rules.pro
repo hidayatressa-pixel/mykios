@@ -1,38 +1,43 @@
-# --- KONFIGURASI ANTI-CRASH MY KIOS ---
+# --- MYKIOS RELEASE R8 RULES ---
 
-# 1. Jangan acak nama paket utama agar tidak bingung saat refleksi
+# Application classes currently remain unobfuscated while commercial hardening
+# is stabilised. This can be tightened after release regression testing.
 -keep class com.app.mykios.** { *; }
 -keepclassmembers class com.app.mykios.** { *; }
 
-# 2. Room Database (Sangat Rawan Force Close di Release)
+# Room
 -keep class androidx.room.** { *; }
 -dontwarn androidx.room.**
 -keep class * extends androidx.room.RoomDatabase
--keep class * extends androidx.room.Dao
 
-# 3. Retrofit & OkHttp (Koneksi AI)
--keepattributes Signature, InnerClasses, AnnotationDefault
--keep class retrofit2.** { *; }
--keep class okhttp3.** { *; }
--dontwarn retrofit2.**
--dontwarn okhttp3.**
+# Preserve generic signatures/annotations used by Android libraries.
+-keepattributes Signature,InnerClasses,EnclosingMethod,AnnotationDefault,*Annotation*
 
-# 4. Gson (Data JSON)
+# Gson
 -keep class com.google.gson.** { *; }
--keepattributes *Annotation*
 
-# 5. MPAndroidChart (Grafik Laporan)
+# MPAndroidChart
 -keep class com.github.mikephil.charting.** { *; }
 -dontwarn com.github.mikephil.charting.**
 
-# 6. Apache POI (Export Excel)
--keep class org.apache.poi.** { *; }
+# Apache POI / XMLBeans bring optional desktop/JVM integrations that are not
+# used by MYKIOS' Android XLSX import/export path. R8 still sees references to
+# those optional classes (Saxon, OSGi, AWT, StAX, BouncyCastle, etc.), so ignore
+# only those optional namespaces instead of disabling R8 globally.
 -dontwarn org.apache.poi.**
+-dontwarn org.apache.xmlbeans.**
+-dontwarn net.sf.saxon.**
+-dontwarn org.osgi.**
+-dontwarn aQute.bnd.**
+-dontwarn java.awt.**
+-dontwarn javax.xml.stream.**
+-dontwarn org.bouncycastle.**
+-dontwarn org.apache.logging.log4j.**
 
-# 7. Tetap simpan nomor baris untuk log error yang jelas
+# Keep line information so release crash traces remain useful.
 -keepattributes SourceFile,LineNumberTable
 -renamesourcefileattribute SourceFile
 
-# 8. Mencegah optimasi yang terlalu agresif yang bisa merusak logika
+# Keep optimisation conservative until the full release regression suite passes.
 -dontoptimize
 -dontobfuscate
