@@ -1,31 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="primary">#6366F1</color>
+    <!-- MYKIOS Premium Brand -->
+    <color name="primary">#4F46E5</color>
     <color name="onPrimary">#FFFFFF</color>
     <color name="primaryContainer">#EEF2FF</color>
-    <color name="onPrimaryContainer">#4338CA</color>
+    <color name="onPrimaryContainer">#312E81</color>
 
-    <color name="secondary">#8B5CF6</color>
+    <color name="secondary">#2563EB</color>
     <color name="onSecondary">#FFFFFF</color>
-    <color name="secondaryContainer">#F5F3FF</color>
-    <color name="onSecondaryContainer">#6D28D9</color>
+    <color name="secondaryContainer">#EFF6FF</color>
+    <color name="onSecondaryContainer">#1E3A8A</color>
 
-    <color name="background">#F7F8FC</color>
-    <color name="onBackground">#111827</color>
+    <color name="brand_navy">#0B1F46</color>
+    <color name="brand_navy_light">#16366F</color>
+    <color name="brand_indigo">#4F46E5</color>
+    <color name="brand_blue">#3B82F6</color>
+    <color name="brand_violet">#7C3AED</color>
+
+    <color name="background">#F6F8FC</color>
+    <color name="onBackground">#0F172A</color>
     <color name="surface">#FFFFFF</color>
-    <color name="onSurface">#111827</color>
+    <color name="onSurface">#0F172A</color>
     <color name="surfaceVariant">#F1F5F9</color>
-    <color name="onSurfaceVariant">#6B7280</color>
+    <color name="onSurfaceVariant">#64748B</color>
+    <color name="surface_soft">#F8FAFC</color>
 
-    <color name="text_primary">#111827</color>
-    <color name="text_secondary">#6B7280</color>
+    <color name="text_primary">#0F172A</color>
+    <color name="text_secondary">#64748B</color>
+    <color name="text_muted">#94A3B8</color>
 
     <color name="success">#10B981</color>
+    <color name="success_soft">#ECFDF5</color>
     <color name="warning">#F59E0B</color>
+    <color name="warning_soft">#FFF7ED</color>
     <color name="danger">#EF4444</color>
-    <color name="dangerContainer">#FEE2E2</color>
+    <color name="dangerContainer">#FEF2F2</color>
+    <color name="danger_soft">#FEF2F2</color>
     <color name="error">#EF4444</color>
 
     <color name="white">#FFFFFF</color>
     <color name="divider">#E2E8F0</color>
+    <color name="outline_soft">#E8EDF5</color>
 </resources>
