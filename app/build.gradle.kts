@@ -14,6 +14,14 @@ android {
         versionCode = 1
         versionName = "1.1"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        // Public RevenueCat SDK keys are injected at build time. Keep the placeholder
+        // so contributors and CI can build without access to the production project.
+        val revenueCatApiKey = providers.gradleProperty("MYKIOS_REVENUECAT_API_KEY")
+            .orElse("")
+            .get()
+        buildConfigField("String", "REVENUECAT_API_KEY", "\"$revenueCatApiKey\"")
+        buildConfigField("String", "REVENUECAT_ENTITLEMENT", "\"pro\"")
     }
 
     packaging {
@@ -95,6 +103,10 @@ dependencies {
     implementation("com.google.api-client:google-api-client-android:1.32.1")
     implementation("com.google.apis:google-api-services-drive:v3-rev20220815-2.0.0")
     implementation("com.google.http-client:google-http-client-gson:1.43.3")
+
+    // RevenueCat subscription/entitlement SDK. Galaxy Store support can be enabled
+    // with purchases-store-galaxy once the Galaxy app/API key is configured.
+    implementation("com.revenuecat.purchases:purchases:10.15.1")
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
