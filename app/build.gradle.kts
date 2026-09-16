@@ -1,6 +1,5 @@
 plugins {
     alias(libs.plugins.android.application)
-    alias(libs.plugins.kotlin.android.plugin)
     alias(libs.plugins.kotlin.symbol.processing)
 }
 
@@ -64,12 +63,13 @@ android {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
-    kotlinOptions { jvmTarget = "11" }
 }
 
+// AGP 9 provides built-in Kotlin support. Do not apply org.jetbrains.kotlin.android
+// or use android.kotlinOptions; doing so registers the Kotlin extension twice.
+
 // Room schema export is intentionally disabled until the existing v5 schema
-// and processor state are regenerated cleanly. This avoids the previous KSP
-// JsonDecodingException/EOF path while preserving normal Room code generation.
+// and processor state are regenerated cleanly. Normal Room code generation stays enabled.
 
 dependencies {
     implementation(libs.androidx.core.ktx)
@@ -89,7 +89,6 @@ dependencies {
     implementation("androidx.work:work-runtime-ktx:2.9.0")
     implementation(libs.lottie)
 
-    // XLSX support. Optional JVM-only POI integrations are suppressed in R8.
     implementation("org.apache.poi:poi-ooxml:5.2.5")
 
     implementation("com.google.android.gms:play-services-auth:21.0.0")
