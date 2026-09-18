@@ -1,11 +1,13 @@
 package com.app.mykios
 
 import android.app.Application
+import com.revenuecat.purchases.CustomerInfo
 import com.revenuecat.purchases.LogLevel
 import com.revenuecat.purchases.Purchases
 import com.revenuecat.purchases.PurchasesConfiguration
+import com.revenuecat.purchases.interfaces.UpdatedCustomerInfoListener
 
-class MyKiosApplication : Application() {
+class MyKiosApplication : Application(), UpdatedCustomerInfoListener {
     override fun onCreate() {
         super.onCreate()
 
@@ -15,14 +17,14 @@ class MyKiosApplication : Application() {
         if (BuildConfig.DEBUG) Purchases.logLevel = LogLevel.DEBUG
 
         Purchases.configure(PurchasesConfiguration.Builder(this, apiKey).build())
-
-        val session = SessionManager(this)
-        Purchases.sharedInstance.updatedCustomerInfoListener = { info ->
-            session.setRevenueCatPro(RevenueCatManager.isPro(info))
-        }
+        Purchases.sharedInstance.updatedCustomerInfoListener = this
 
         RevenueCatManager.refresh(
-            onResult = { active -> session.setRevenueCatPro(active) }
+            onResult = { active -> SessionManager(this).setRevenueCatPro(active) }
         )
+    }
+
+    override fun onReceived(customerInfo: CustomerInfo) {
+        SessionManager(this).setRevenueCatPro(RevenueCatManager.isPro(customerInfo))
     }
 }
