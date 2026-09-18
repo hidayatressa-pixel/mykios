@@ -2,8 +2,8 @@
 
 ## Fixed in this package
 - Removed profile-name developer bypass that granted PRO.
-- Split app into `free` and `pro` build flavors. PRO entitlement is compile-time (`BuildConfig.MYKIOS_PRO_EDITION`), not a writable preference.
-- Removed WebView JavaScript bridge and URL-status callbacks that could unlock PRO without trusted payment verification.
+- Split app into `free` and `pro` build flavors. Legacy PRO builds remain supported; the free build can now also unlock PRO only from a RevenueCat-verified entitlement.
+- Removed the legacy WebView upgrade/payment flow. Upgrade is now a native RevenueCat Offering -> Google Play purchase flow with verified CustomerInfo entitlement.
 - Replaced plain-text password/PIN storage with salted PBKDF2-HMAC-SHA256 hashes. Existing plain-text PINs migrate after the first successful verification.
 - Removed Room `fallbackToDestructiveMigration()` to prevent silent database deletion on missing migrations.
 - Disabled cleartext HTTP and added a Network Security Config that denies cleartext by default.
@@ -14,9 +14,10 @@
 - Enabled R8 minification for release builds.
 
 ## Distribution model
-- `free` flavor: feature-limited build; cannot self-unlock PRO.
-- `pro` flavor: full paid APK for direct distribution.
-- For Play Store in-app upgrades, integrate Google Play Billing before enabling an in-app purchase button.
+- `free` flavor: feature-limited build; unlocks PRO only when RevenueCat reports the configured `pro` entitlement active.
+- `pro` flavor: legacy full paid APK/direct-distribution edition remains supported.
+- Native purchase, restore-purchases, Offering price display, launch refresh, CustomerInfo listener, and cached verified entitlement are implemented.
+- Production activation still requires the RevenueCat public Android SDK key plus a configured Offering/package/product linked to the `pro` entitlement in the store dashboard.
 
 ## Required verification on a developer machine
 The provided environment could not download Gradle 9.4.1, so run:
@@ -33,3 +34,14 @@ The current Room database is version 5. Destructive fallback was removed. Future
 - Removed unused Retrofit dependencies from the Android app.
 - Added a Room index for `detail_transaksi.transaksiId` to avoid full scans on parent updates.
 - Enabled Room schema export to `app/schemas` through KSP for migration review/versioning.
+
+
+## RevenueCat / Shipaton hardening (2026-09-18)
+- Added native Offering loading and dynamic store price display.
+- Added PurchaseParams-based checkout with explicit cancel/error states.
+- Added user-triggered Restore Purchases.
+- Added entitlement refresh at application start and when MainActivity resumes.
+- Added UpdatedCustomerInfoListener so verified entitlement changes update local feature gating.
+- Removed the obsolete local HTML/WebView upgrade screen from the active upgrade flow.
+- PRO feature gates continue to use SessionManager.isPro(), which now accepts either the legacy PRO flavor or the last RevenueCat-verified active entitlement.
+- CI builds intentionally work without a production RevenueCat key; an empty key fails closed and cannot unlock PRO.
