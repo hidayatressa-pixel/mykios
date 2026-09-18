@@ -7,6 +7,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
+import androidx.room.Transaction
 
 @Keep
 data class SalesData(val total: Long = 0, val tanggal: String = "")
@@ -55,6 +56,33 @@ interface TransaksiDao {
 
     @Insert
     suspend fun insertDetail(detail: DetailTransaksi)
+
+    @Query("UPDATE barang SET stok = stok - :qty WHERE id = :barangId AND stok >= :qty")
+    suspend fun decreaseStockIfAvailable(barangId: Int, qty: Int): Int
+
+    @Transaction
+    suspend fun createSale(transaksi: Transaksi, items: List<Pair<Barang, Int>>): Long {
+        require(items.isNotEmpty()) { "Keranjang masih kosong" }
+        items.forEach { (barang, qty) ->
+            require(qty > 0) { "Jumlah barang tidak valid" }
+            val id = requireNotNull(barang.id) { "ID barang tidak valid" }
+            if (decreaseStockIfAvailable(id, qty) != 1) {
+                throw IllegalStateException("Stok ${barang.nama} tidak mencukupi")
+            }
+        }
+        val transaksiId = insertTransaksi(transaksi)
+        items.forEach { (barang, qty) ->
+            insertDetail(
+                DetailTransaksi(
+                    transaksiId = transaksiId.toInt(),
+                    namaBarang = barang.nama,
+                    jumlah = qty,
+                    harga = barang.harga
+                )
+            )
+        }
+        return transaksiId
+    }
 
     @Query("SELECT SUM(total) FROM transaksi WHERE tanggal >= :start AND tanggal <= :end")
     fun getTotalRange(start: Long, end: Long): Long?
