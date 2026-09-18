@@ -54,7 +54,6 @@ class LaporanActivity : BaseActivity() {
             loadDataLaporan(listView)
             loadLineChartData()
             loadPieChartData()
-            checkAutoClearOldReports()
         } else {
             cardTable.visibility = View.GONE
             findViewById<View>(R.id.cardChart).visibility = View.GONE
@@ -63,7 +62,7 @@ class LaporanActivity : BaseActivity() {
 
         findViewById<Button>(R.id.btnExportExcel).setOnClickListener {
             if (session.isPro() || session.isDev()) {
-                Toast.makeText(this, "Mengekspor laporan ke Excel...", Toast.LENGTH_SHORT).show()
+                exportReport()
             } else {
                 Toast.makeText(this, "Fitur Export Excel hanya untuk member PRO!", Toast.LENGTH_SHORT).show()
             }
@@ -102,12 +101,13 @@ class LaporanActivity : BaseActivity() {
             .show()
     }
 
-    private fun checkAutoClearOldReports() {
+    private fun exportReport() {
+        val db = AppDatabase.getDatabase(this)
         lifecycleScope.launch(Dispatchers.IO) {
-            val db = AppDatabase.getDatabase(this@LaporanActivity)
-            val sevenDaysAgo = System.currentTimeMillis() - (7L * 24 * 60 * 60 * 1000)
-            db.transaksiDao().deleteTransactionsOlderThan(sevenDaysAgo)
-            db.transaksiDao().deleteOrphanedDetails()
+            val barang = db.transaksiDao().getAllBarangRaw()
+            val transaksi = db.transaksiDao().getAllTransaksi()
+            val hutang = db.transaksiDao().getAllHutang()
+            StokExportUtils.exportAllData(this@LaporanActivity, barang, transaksi, hutang)
         }
     }
 
