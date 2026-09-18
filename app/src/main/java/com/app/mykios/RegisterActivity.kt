@@ -1,29 +1,15 @@
 package com.app.mykios
 
-import android.Manifest
 import android.content.Intent
-import android.content.pm.PackageManager
-import android.location.Geocoder
 import android.os.Bundle
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.app.ActivityCompat
-import com.google.android.gms.location.LocationServices
 import java.util.*
 
 class RegisterActivity : BaseActivity() {
-
-    private val requestPermissionLauncher = registerForActivityResult(
-        ActivityResultContracts.RequestPermission()
-    ) { isGranted: Boolean ->
-        if (isGranted) {
-            detectLocationAndSetLanguage()
-        }
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,9 +21,9 @@ class RegisterActivity : BaseActivity() {
             return
         }
 
-        // Detect Location on First Run
+        // Locale is enough for first-run language selection; location permission is unnecessary.
         if (!session.isLanguageSet()) {
-            checkLocationPermission()
+            setLanguageByCountry(Locale.getDefault().country.ifBlank { "ID" }, restart = false)
         }
 
         setContentView(R.layout.activity_register)
@@ -80,38 +66,7 @@ class RegisterActivity : BaseActivity() {
         }
     }
 
-    private fun checkLocationPermission() {
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            requestPermissionLauncher.launch(Manifest.permission.ACCESS_COARSE_LOCATION)
-        } else {
-            detectLocationAndSetLanguage()
-        }
-    }
-
-    private fun detectLocationAndSetLanguage() {
-        val fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            fusedLocationClient.lastLocation.addOnSuccessListener { location ->
-                if (location != null) {
-                    val geocoder = Geocoder(this, Locale.getDefault())
-                    try {
-                        @Suppress("DEPRECATION")
-                        val addresses = geocoder.getFromLocation(location.latitude, location.longitude, 1)
-                        if (addresses != null && addresses.isNotEmpty()) {
-                            val countryCode = addresses[0].countryCode // Contoh: ID, MY, JP
-                            if (countryCode != null) {
-                                setLanguageByCountry(countryCode)
-                            }
-                        }
-                    } catch (e: Exception) {
-                        e.printStackTrace()
-                    }
-                }
-            }
-        }
-    }
-
-    private fun setLanguageByCountry(countryCode: String) {
+    private fun setLanguageByCountry(countryCode: String, restart: Boolean = true) {
         val session = SessionManager(this)
         val lang = when (countryCode.uppercase()) {
             "ID" -> "in"
@@ -124,12 +79,13 @@ class RegisterActivity : BaseActivity() {
             else -> "en"
         }
         
-        if (session.getLanguage() != lang) {
+        if (session.getLanguage() != lang || !session.isLanguageSet()) {
             session.setLanguage(lang)
-            // Restart current activity to apply language immediately
-            val intent = Intent(this, RegisterActivity::class.java)
-            finish()
-            startActivity(intent)
+            if (restart) {
+                val intent = Intent(this, RegisterActivity::class.java)
+                finish()
+                startActivity(intent)
+            }
         }
     }
 }
