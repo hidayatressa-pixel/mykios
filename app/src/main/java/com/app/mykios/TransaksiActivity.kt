@@ -332,33 +332,52 @@ class TransaksiActivity : BaseActivity() {
     }
 
     private fun showPrinterSelection(items: List<Pair<Barang, Int>>) {
-        val devices = printerHelper.getPairedDevices()
-        if (devices.isEmpty()) {
-            Toast.makeText(this, "Tidak ada printer bluetooth terikat", Toast.LENGTH_SHORT).show()
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S &&
+            androidx.core.content.ContextCompat.checkSelfPermission(
+                this,
+                android.Manifest.permission.BLUETOOTH_CONNECT
+            ) != android.content.pm.PackageManager.PERMISSION_GRANTED
+        ) {
+            androidx.core.app.ActivityCompat.requestPermissions(
+                this,
+                arrayOf(android.Manifest.permission.BLUETOOTH_CONNECT),
+                1201
+            )
+            Toast.makeText(this, "Izinkan Bluetooth lalu pilih Cetak kembali", Toast.LENGTH_SHORT).show()
             return
         }
 
-        val names = devices.map { it.name ?: "Unknown" }.toTypedArray()
-        MaterialAlertDialogBuilder(this)
-            .setTitle("Pilih Printer")
-            .setItems(names) { _, which ->
-                lifecycleScope.launch {
-                    val connected = printerHelper.connect(devices[which])
-                    if (connected) {
-                        val session = SessionManager(this@TransaksiActivity)
-                        val itemStrings = items.map { "${it.first.nama} x${it.second}" }
-                        printerHelper.printReceipt(
-                            session.getNamaToko() ?: "My Kios",
-                            itemStrings,
-                            CurrencyUtils.formatRupiah(totalAkhir)
-                        )
-                        Toast.makeText(this@TransaksiActivity, "Mencetak...", Toast.LENGTH_SHORT).show()
-                    } else {
-                        Toast.makeText(this@TransaksiActivity, "Gagal menyambung printer", Toast.LENGTH_SHORT).show()
+        try {
+            val devices = printerHelper.getPairedDevices()
+            if (devices.isEmpty()) {
+                Toast.makeText(this, "Tidak ada printer bluetooth terikat", Toast.LENGTH_SHORT).show()
+                return
+            }
+
+            val names = devices.map { it.name ?: "Unknown" }.toTypedArray()
+            MaterialAlertDialogBuilder(this)
+                .setTitle("Pilih Printer")
+                .setItems(names) { _, which ->
+                    lifecycleScope.launch {
+                        val connected = printerHelper.connect(devices[which])
+                        if (connected) {
+                            val session = SessionManager(this@TransaksiActivity)
+                            val itemStrings = items.map { "${it.first.nama} x${it.second}" }
+                            printerHelper.printReceipt(
+                                session.getNamaToko() ?: "My Kios",
+                                itemStrings,
+                                CurrencyUtils.formatRupiah(totalAkhir)
+                            )
+                            Toast.makeText(this@TransaksiActivity, "Mencetak...", Toast.LENGTH_SHORT).show()
+                        } else {
+                            Toast.makeText(this@TransaksiActivity, "Gagal menyambung printer", Toast.LENGTH_SHORT).show()
+                        }
                     }
                 }
-            }
-            .show()
+                .show()
+        } catch (_: SecurityException) {
+            Toast.makeText(this, "Izin Bluetooth diperlukan untuk printer", Toast.LENGTH_SHORT).show()
+        }
     }
 
     private fun showActionDialog(transaksiId: Long, items: List<Pair<Barang, Int>>, metode: String) {
