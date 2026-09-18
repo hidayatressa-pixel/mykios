@@ -238,8 +238,44 @@ class MainActivity : BaseActivity() {
 
     override fun onResume() {
         super.onResume()
+        RevenueCatManager.refresh(
+            onResult = { active ->
+                runOnUiThread {
+                    session.setRevenueCatPro(active)
+                    refreshProUi()
+                    updateSaldoInteraktif()
+                }
+            }
+        )
+        refreshProUi()
         updateSaldoInteraktif()
         syncProfileData()
+    }
+
+    private fun refreshProUi() {
+        val pro = session.isPro() || session.isDev()
+        findViewById<View>(R.id.cardPro)?.visibility = if (pro) View.GONE else View.VISIBLE
+        findViewById<View>(R.id.cardChart)?.visibility = if (pro) View.VISIBLE else View.GONE
+
+        val navView = findViewById<NavigationView>(R.id.nav_view)
+        val status = navView.getHeaderView(0).findViewById<TextView>(R.id.tvStatusAkun)
+        when {
+            session.isDev() -> {
+                status.text = "DEVELOPER MODE"
+                status.alpha = 1f
+                status.setBackgroundResource(R.drawable.bg_button_kasir)
+            }
+            session.isPro() -> {
+                status.text = "PRO MEMBER"
+                status.alpha = 1f
+                status.setBackgroundResource(R.drawable.bg_card_saldo)
+            }
+            else -> {
+                status.text = "FREE USER"
+                status.alpha = 0.6f
+                status.setBackgroundResource(android.R.color.darker_gray)
+            }
+        }
     }
 
     private fun updateChartData() {
