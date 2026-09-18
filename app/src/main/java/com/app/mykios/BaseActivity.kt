@@ -22,8 +22,4 @@ open class BaseActivity : AppCompatActivity() {
         super.attachBaseContext(LocaleHelper.setLocale(newBase, lang))
     }
 
-    override fun onResume() {
-        super.onResume()
-        LocaleHelper.applyLocale(this)
-    }
 }
