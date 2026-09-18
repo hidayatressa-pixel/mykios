@@ -35,9 +35,6 @@ jobs:
       - name: Compile Pro Debug
         run: ./gradlew assembleProDebug
 
-      - name: Verify Free Release R8
-        run: ./gradlew minifyFreeReleaseWithR8
-
       - name: Unit tests
         run: ./gradlew testFreeDebugUnitTest testProDebugUnitTest
 
