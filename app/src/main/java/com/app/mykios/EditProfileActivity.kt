@@ -169,9 +169,14 @@ class EditProfileActivity : BaseActivity() {
     }
 
     private fun getCurrentLocation() {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            Toast.makeText(this, "Izin lokasi diperlukan untuk fitur ini", Toast.LENGTH_SHORT).show()
+            return
+        }
+
         val fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            Toast.makeText(this, "Mengambil lokasi...", Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, "Mengambil lokasi...", Toast.LENGTH_SHORT).show()
+        try {
             fusedLocationClient.lastLocation.addOnSuccessListener { location ->
                 if (location != null) {
                     fetchAddressFromLocation(location.latitude, location.longitude)
@@ -179,6 +184,8 @@ class EditProfileActivity : BaseActivity() {
                     Toast.makeText(this, "Gagal mendapatkan lokasi. Pastikan GPS aktif.", Toast.LENGTH_SHORT).show()
                 }
             }
+        } catch (_: SecurityException) {
+            Toast.makeText(this, "Izin lokasi tidak tersedia", Toast.LENGTH_SHORT).show()
         }
     }
 
