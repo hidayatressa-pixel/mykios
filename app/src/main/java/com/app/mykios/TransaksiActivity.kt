@@ -243,35 +243,33 @@ class TransaksiActivity : BaseActivity() {
             else -> "CASH"
         }
 
+        btnSimpan.isEnabled = false
         lifecycleScope.launch(Dispatchers.IO) {
-            val transaksiId = db.transaksiDao().insertTransaksi(
-                Transaksi(tanggal = System.currentTimeMillis(), total = totalAkhir, metode = metode)
-            )
-
-            val itemsForNota = mutableListOf<Pair<Barang, Int>>()
-            keranjangMap.forEach { (id, qty) ->
-                val barang = listBarangData.find { it.id == id }
-                if (barang != null) {
-                    val updatedBarang = barang.copy(stok = barang.stok - qty)
-                    db.transaksiDao().updateBarang(updatedBarang)
-
-                    db.transaksiDao().insertDetail(
-                        DetailTransaksi(
-                            transaksiId = transaksiId.toInt(),
-                            namaBarang = barang.nama,
-                            jumlah = qty,
-                            harga = barang.harga
-                        )
-                    )
-                    itemsForNota.add(Pair(barang, qty))
+            try {
+                val itemsForNota = keranjangMap.mapNotNull { (id, qty) ->
+                    listBarangData.find { it.id == id }?.let { it to qty }
                 }
-            }
+                if (itemsForNota.size != keranjangMap.size) {
+                    throw IllegalStateException("Ada barang yang sudah tidak tersedia. Muat ulang stok.")
+                }
 
-            withContext(Dispatchers.Main) {
-                if (metode == "QRIS") {
-                    showQrisGeneratorDialog(transaksiId, itemsForNota, totalAkhir)
-                } else {
-                    showActionDialog(transaksiId, itemsForNota, metode)
+                val transaksiId = db.transaksiDao().createSale(
+                    Transaksi(tanggal = System.currentTimeMillis(), total = totalAkhir, metode = metode),
+                    itemsForNota
+                )
+
+                withContext(Dispatchers.Main) {
+                    if (metode == "QRIS") {
+                        showQrisGeneratorDialog(transaksiId, itemsForNota, totalAkhir)
+                    } else {
+                        showActionDialog(transaksiId, itemsForNota, metode)
+                    }
+                }
+            } catch (e: Exception) {
+                withContext(Dispatchers.Main) {
+                    btnSimpan.isEnabled = true
+                    Toast.makeText(this@TransaksiActivity, e.message ?: "Transaksi gagal disimpan", Toast.LENGTH_LONG).show()
+                    loadBarang()
                 }
             }
         }
