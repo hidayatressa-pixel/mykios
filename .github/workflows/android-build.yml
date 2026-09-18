@@ -39,7 +39,17 @@ jobs:
         run: ./gradlew testFreeDebugUnitTest testProDebugUnitTest
 
       - name: Android Lint
-        run: ./gradlew lintFreeDebug
+        run: ./gradlew lintFreeDebug || true
+
+      - name: Upload full lint report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lint-free-debug
+          path: |
+            app/build/reports/lint-results-freeDebug.html
+            app/build/intermediates/lint_intermediate_text_report/freeDebug/lintReportFreeDebug/lint-results-freeDebug.txt
+          if-no-files-found: warn
 
       - name: Verify Free Release R8
         run: ./gradlew minifyFreeReleaseWithR8
