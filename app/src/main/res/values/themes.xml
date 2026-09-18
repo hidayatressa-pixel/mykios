@@ -18,7 +18,6 @@
         <item name="android:statusBarColor">@color/brand_navy</item>
         <item name="android:navigationBarColor">@color/white</item>
         <item name="android:windowLightStatusBar">false</item>
-        <item name="android:windowLightNavigationBar">true</item>
         <item name="android:fontFamily">sans</item>
         <item name="navigationViewStyle">@style/Widget.MyKios.NavigationView</item>
         <item name="materialCardViewStyle">@style/Widget.MyKios.Card</item>
