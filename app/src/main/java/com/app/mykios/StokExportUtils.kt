@@ -26,7 +26,7 @@ object StokExportUtils {
         val csvData = StringBuilder()
         csvData.append(csvHeader)
         listBarang.forEach { b ->
-            csvData.append("${b.kodeBarang},${b.nama},${b.harga},${b.stok}\n")
+            csvData.append(listOf(b.kodeBarang, b.nama, b.harga, b.stok).joinToString(",") { csv(it) }).append("\n")
         }
         saveToDownloads(context, fileName, csvData.toString())
     }
@@ -39,24 +39,30 @@ object StokExportUtils {
         csvData.append("--- DATA BARANG ---\n")
         csvData.append("Kode,Nama,Harga,Modal,Stok\n")
         listBarang.forEach { b ->
-            csvData.append("${b.kodeBarang},${b.nama},${b.harga},${b.hargaModal},${b.stok}\n")
+            csvData.append(listOf(b.kodeBarang, b.nama, b.harga, b.hargaModal, b.stok).joinToString(",") { csv(it) }).append("\n")
         }
         
         // Section Transaksi
         csvData.append("\n--- DATA TRANSAKSI ---\n")
         csvData.append("Tanggal,Total,Metode\n")
         listTransaksi.forEach { t ->
-            csvData.append("${t.tanggal},${t.total},${t.metode}\n")
+            csvData.append(listOf(t.tanggal, t.total, t.metode).joinToString(",") { csv(it) }).append("\n")
         }
 
         // Section Hutang
         csvData.append("\n--- DATA HUTANG ---\n")
         csvData.append("Pelanggan,Jumlah,Jatuh Tempo,Lunas\n")
         listHutang.forEach { h ->
-            csvData.append("${h.namaPelanggan},${h.jumlah},${h.jatuhTempo},${h.lunas}\n")
+            csvData.append(listOf(h.namaPelanggan, h.jumlah, h.jatuhTempo, h.lunas).joinToString(",") { csv(it) }).append("\n")
         }
 
         saveToDownloads(context, fileName, csvData.toString())
+    }
+
+    private fun csv(value: Any?): String {
+        val raw = value?.toString().orEmpty()
+        val safe = if (raw.startsWith("=") || raw.startsWith("+") || raw.startsWith("-") || raw.startsWith("@")) "'$raw" else raw
+        return "\"" + safe.replace("\"", "\"\"") + "\""
     }
 
     private fun saveToDownloads(context: Context, fileName: String, data: String) {
