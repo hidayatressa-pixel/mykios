@@ -70,13 +70,12 @@ class SettingsActivity : BaseActivity() {
         val switchDark = findViewById<MaterialSwitch>(R.id.switchDarkMode)
         switchDark.isChecked = session.isDarkMode()
         switchDark.setOnCheckedChangeListener { _, isChecked ->
+            if (session.isDarkMode() == isChecked) return@setOnCheckedChangeListener
             session.setDarkMode(isChecked)
-            if (isChecked) {
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-            } else {
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-            }
-            delegate.applyDayNight()
+            AppCompatDelegate.setDefaultNightMode(
+                if (isChecked) AppCompatDelegate.MODE_NIGHT_YES
+                else AppCompatDelegate.MODE_NIGHT_NO
+            )
         }
 
         // Hidden / Unused driveHelper initialization if needed in future
