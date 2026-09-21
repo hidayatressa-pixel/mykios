@@ -5,6 +5,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import androidx.lifecycle.lifecycleScope
+import androidx.activity.result.contract.ActivityResultContracts
 import com.journeyapps.barcodescanner.BarcodeCallback
 import com.journeyapps.barcodescanner.BarcodeResult
 import com.journeyapps.barcodescanner.CompoundBarcodeView
@@ -17,6 +18,16 @@ class ScannerActivity : BaseActivity() {
     private lateinit var barcodeView: CompoundBarcodeView
     private var isProcessing = false
     private var isFlashOn = false
+
+    private val cameraPermissionLauncher =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
+            if (granted) {
+                barcodeView.resume()
+            } else {
+                Toast.makeText(this, "Izin kamera diperlukan untuk scan barcode", Toast.LENGTH_LONG).show()
+                finish()
+            }
+        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,8 +67,7 @@ class ScannerActivity : BaseActivity() {
             if (androidx.core.content.ContextCompat.checkSelfPermission(this, android.Manifest.permission.CAMERA) == android.content.pm.PackageManager.PERMISSION_GRANTED) {
                 barcodeView.resume()
             } else {
-                Toast.makeText(this, "Izin kamera tidak tersedia", Toast.LENGTH_SHORT).show()
-                finish()
+                cameraPermissionLauncher.launch(android.Manifest.permission.CAMERA)
             }
         } catch (e: Exception) {
             e.printStackTrace()
