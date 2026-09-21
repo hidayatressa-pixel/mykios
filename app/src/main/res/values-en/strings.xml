@@ -30,4 +30,62 @@
     <string name="section_backup">Backup &amp; Restore</string>
     <string name="label_cloud_sync">Cloud Sync (Google Drive)</string>
     <string name="label_export_csv">Export Data to CSV</string>
+    <string name="navigation_drawer_open" translatable="false">Open navigation drawer</string>
+    <string name="navigation_drawer_close" translatable="false">Close navigation drawer</string>
+    <string name="welcome_back" translatable="false">👋 Selamat Datang,</string>
+    <string name="user_afterproject" translatable="false">afterproject</string>
+    <string name="warung_name" translatable="false">Warung: afterproject</string>
+    <string name="status_online" translatable="false">🟢 Online</string>
+    <string name="saldo_hari_ini" translatable="false">SALDO HARI INI</string>
+    <string name="laba_bersih" translatable="false">Laba Bersih: Rp 45.000</string>
+    <string name="saldo_message" translatable="false">Ayo transaksi! Saldo kamu masih Rp.0 loh 🚀</string>
+    <string name="total_transaksi" translatable="false">Total Transaksi</string>
+    <string name="produk_terjual" translatable="false">Produk Terjual</string>
+    <string name="mulai_transaksi" translatable="false">Mulai Transaksi</string>
+    <string name="kasir_digital" translatable="false">Kasir Digital</string>
+    <string name="ringkasan_hari_ini" translatable="false">Ringkasan Hari Ini</string>
+    <string name="lihat_semua" translatable="false">Lihat Semua ></string>
+    <string name="transaksi" translatable="false">Transaksi</string>
+    <string name="hutang_aktif" translatable="false">Hutang Aktif</string>
+    <string name="stok_menipis" translatable="false">Stok Menipis</string>
+    <string name="menu_utama" translatable="false">Menu Utama</string>
+    <string name="stock" translatable="false">Stock</string>
+    <string name="kelola_produk" translatable="false">Kelola Produk</string>
+    <string name="hutang" translatable="false">Hutang</string>
+    <string name="catat_tagih" translatable="false">Catat &amp; Tagih</string>
+    <string name="laporan" translatable="false">Laporan</string>
+    <string name="lihat_analisa" translatable="false">Lihat Analisa</string>
+    <string name="ai_pintar" translatable="false">AI Pintar</string>
+    <string name="analisa_toko" translatable="false">Analisa Toko</string>
+    <string name="qris" translatable="false">QRIS</string>
+    <string name="pembayaran" translatable="false">Pembayaran</string>
+    <string name="pengaturan" translatable="false">Pengaturan</string>
+    <string name="akun_toko" translatable="false">Akun &amp; Toko</string>
+    <string name="upgrade_pro" translatable="false">Tingkatkan ke PRO</string>
+    <string name="pro_desc" translatable="false">Dapatkan fitur premium untuk\nkelola toko lebih maksimal</string>
+    <string name="upgrade_now" translatable="false">Upgrade Sekarang</string>
+    <string name="footer_powered" translatable="false">Powered by After Project 🚀</string>
+    <string name="nav_home" translatable="false">Home</string>
+    <string name="nav_transactions" translatable="false">Transaksi</string>
+    <string name="nav_stock" translatable="false">Stock</string>
+    <string name="nav_report" translatable="false">Laporan</string>
+    <string name="nav_account" translatable="false">Akun</string>
+    <string name="upgrade_premium" translatable="false">Upgrade Premium</string>
+    <string name="unlock_potential" translatable="false">Buka Potensi Maksimal Bisnismu</string>
+    <string name="pro_benefits_desc" translatable="false">Nikmati fitur eksklusif My Kios PRO untuk pengelolaan toko yang lebih cerdas dan efisien.</string>
+    <string name="feature_barcode" translatable="false">Barcode Scanner</string>
+    <string name="feature_ai" translatable="false">AI Insights</string>
+    <string name="feature_report" translatable="false">Laporan Premium</string>
+    <string name="feature_unlimited" translatable="false">Import Unlimited</string>
+    <string name="special_price" translatable="false">Harga Spesial</string>
+    <string name="pro_price" translatable="false">Rp 49.000 / bln</string>
+    <string name="subscribe_now" translatable="false">LANGGANAN SEKARANG</string>
+    <string name="contact_admin" translatable="false">Punya pertanyaan? Hubungi Admin</string>
+    <string name="label_free_user" translatable="false">FREE USER</string>
+    <string name="label_dev_mode" translatable="false">DEVELOPER MODE</string>
+    <string name="label_pro_member" translatable="false">PRO MEMBER</string>
+    <string name="label_app_version" translatable="false">v1.0.0</string>
+    <string name="label_default_shop_name" translatable="false">Nama Toko</string>
+    <string name="label_default_owner_name" translatable="false">Nama Pemilik</string>
+    <string name="label_category_product" translatable="false">Kategori Barang</string>
 </resources>
