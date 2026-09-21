@@ -47,6 +47,22 @@ class TransaksiActivity : BaseActivity() {
     private var kembalian = 0
 
     private lateinit var printerHelper: BluetoothPrinterHelper
+    private var pendingPrinterItems: List<Pair<Barang, Int>>? = null
+
+    private val bluetoothPermissionLauncher =
+        registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { result ->
+            val connectGranted = android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.S ||
+                result[android.Manifest.permission.BLUETOOTH_CONNECT] == true
+            if (connectGranted) {
+                pendingPrinterItems?.let { items ->
+                    pendingPrinterItems = null
+                    showPrinterSelection(items)
+                }
+            } else {
+                pendingPrinterItems = null
+                Toast.makeText(this, "Izin Bluetooth diperlukan untuk mencetak", Toast.LENGTH_LONG).show()
+            }
+        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -338,12 +354,13 @@ class TransaksiActivity : BaseActivity() {
                 android.Manifest.permission.BLUETOOTH_CONNECT
             ) != android.content.pm.PackageManager.PERMISSION_GRANTED
         ) {
-            androidx.core.app.ActivityCompat.requestPermissions(
-                this,
-                arrayOf(android.Manifest.permission.BLUETOOTH_CONNECT),
-                1201
+            pendingPrinterItems = items
+            bluetoothPermissionLauncher.launch(
+                arrayOf(
+                    android.Manifest.permission.BLUETOOTH_CONNECT,
+                    android.Manifest.permission.BLUETOOTH_SCAN
+                )
             )
-            Toast.makeText(this, "Izinkan Bluetooth lalu pilih Cetak kembali", Toast.LENGTH_SHORT).show()
             return
         }
 
