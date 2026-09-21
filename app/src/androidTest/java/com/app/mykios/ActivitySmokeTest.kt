@@ -5,6 +5,7 @@ import androidx.test.core.app.ActivityScenario
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import org.junit.Before
+import androidx.test.platform.app.InstrumentationRegistry
 import org.junit.Test
 import org.junit.runner.RunWith
 
@@ -22,6 +23,13 @@ class ActivitySmokeTest {
         session.setIntroDone(true)
         session.setOnboardingFinished(true)
         session.setLanguage("in")
+        // Runtime smoke tests verify activity startup, not Android permission UI.
+        // Pre-grant notifications so MainActivity can remain RESUMED on API 33+.
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
+            InstrumentationRegistry.getInstrumentation().uiAutomation.executeShellCommand(
+                "pm grant ${context.packageName} android.permission.POST_NOTIFICATIONS"
+            ).close()
+        }
     }
 
     private fun <T : androidx.activity.ComponentActivity> launch(clazz: Class<T>) {
