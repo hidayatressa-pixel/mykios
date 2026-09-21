@@ -66,15 +66,17 @@ class SettingsActivity : BaseActivity() {
         }
 
         // Dark Mode Switch
-        val switchDark = findViewById<MaterialSwitch>(R.id.switchDarkMode)
-        switchDark.isChecked = session.isDarkMode()
-        switchDark.setOnCheckedChangeListener { _, isChecked ->
-            if (session.isDarkMode() == isChecked) return@setOnCheckedChangeListener
-            session.setDarkMode(isChecked)
-            AppCompatDelegate.setDefaultNightMode(
-                if (isChecked) AppCompatDelegate.MODE_NIGHT_YES
-                else AppCompatDelegate.MODE_NIGHT_NO
-            )
+        val switchDark = findViewById<MaterialSwitch?>(R.id.switchDarkMode)
+        switchDark?.apply {
+            isChecked = session.isDarkMode()
+            setOnCheckedChangeListener { _, isChecked ->
+                if (session.isDarkMode() == isChecked) return@setOnCheckedChangeListener
+                session.setDarkMode(isChecked)
+                AppCompatDelegate.setDefaultNightMode(
+                    if (isChecked) AppCompatDelegate.MODE_NIGHT_YES
+                    else AppCompatDelegate.MODE_NIGHT_NO
+                )
+            }
         }
 
     }
