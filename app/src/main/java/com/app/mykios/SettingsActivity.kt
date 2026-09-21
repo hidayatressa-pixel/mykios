@@ -1,20 +1,16 @@
 package com.app.mykios
 
-import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.os.Build
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.lifecycleScope
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.android.material.materialswitch.MaterialSwitch
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import com.google.android.material.materialswitch.MaterialSwitch
 
 class SettingsActivity : BaseActivity() {
 
@@ -115,19 +111,15 @@ class SettingsActivity : BaseActivity() {
     }
 
     private fun exportData() {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
-            if (androidx.core.content.ContextCompat.checkSelfPermission(this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE) != android.content.pm.PackageManager.PERMISSION_GRANTED) {
-                androidx.core.app.ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.WRITE_EXTERNAL_STORAGE), 1002)
-                return
-            }
-        }
-
+        // StokExportUtils uses Android's modern export/share flow. No broad
+        // storage permission is requested here; Android 10+ must not depend on
+        // WRITE_EXTERNAL_STORAGE and older supported versions can use the
+        // app-scoped/FileProvider flow.
         val db = AppDatabase.getDatabase(this)
         lifecycleScope.launch(Dispatchers.IO) {
             val listBarang = db.transaksiDao().getAllBarangRaw()
             val listTransaksi = db.transaksiDao().getAllTransaksi()
             val listHutang = db.transaksiDao().getAllHutang()
-            
             StokExportUtils.exportAllData(this@SettingsActivity, listBarang, listTransaksi, listHutang)
         }
     }
