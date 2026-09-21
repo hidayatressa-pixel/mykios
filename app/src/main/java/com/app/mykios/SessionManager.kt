@@ -50,6 +50,12 @@ class SessionManager(context: Context) {
     fun getKategori(): String = prefs.getString("kategori_usaha", "Sembako") ?: "Sembako"
     fun getNamaToko(): String? = prefs.getString("nama_toko", "Toko Saya")
     fun getNamaPemilik(): String? = prefs.getString("nama_pemilik", "Pemilik")
+    fun updateProfileIdentity(namaToko: String, namaPemilik: String) {
+        prefs.edit()
+            .putString("nama_toko", namaToko)
+            .putString("nama_pemilik", namaPemilik)
+            .apply()
+    }
     fun isRegistered(): Boolean = prefs.getBoolean("is_registered", false)
 
     fun logout() { prefs.edit().clear().apply() }
