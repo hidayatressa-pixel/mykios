@@ -18,7 +18,6 @@ import kotlinx.coroutines.withContext
 
 class SettingsActivity : BaseActivity() {
 
-    private lateinit var driveHelper: GoogleDriveHelper
     private lateinit var ivProfile: ImageView
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -78,8 +77,6 @@ class SettingsActivity : BaseActivity() {
             )
         }
 
-        // Hidden / Unused driveHelper initialization if needed in future
-        driveHelper = GoogleDriveHelper(this)
     }
 
     override fun onResume() {
