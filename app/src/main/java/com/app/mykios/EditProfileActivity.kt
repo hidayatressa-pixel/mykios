@@ -244,12 +244,11 @@ class EditProfileActivity : BaseActivity() {
         session.setProvinsi(etProvinsi.text.toString())
         session.setKodePos(etKodePos.text.toString())
         
-        // Update basic info if changed
-        session.saveTokoInfo(
+        // Update profile identity without touching password, registration date,
+        // trial state, role, or subscription state.
+        session.updateProfileIdentity(
             etNamaToko.text.toString(),
-            etNamaPemilik.text.toString(),
-            session.getKategori(),
-            "NOPASS" // Password stays same
+            etNamaPemilik.text.toString()
         )
 
         showSuccessDialog()
