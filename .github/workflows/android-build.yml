@@ -39,7 +39,7 @@ jobs:
         run: ./gradlew testFreeDebugUnitTest testProDebugUnitTest
 
       - name: Android Lint
-        run: ./gradlew lintFreeDebug || true
+        run: ./gradlew lintFreeDebug
 
       - name: Upload full lint report
         if: always()
