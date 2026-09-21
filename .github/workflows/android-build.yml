@@ -86,4 +86,23 @@ jobs:
           profile: pixel_6
           disable-animations: true
           emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
-          script: ./gradlew connectedFreeDebugAndroidTest
+          script: |
+            set +e
+            adb logcat -c || true
+            ./gradlew connectedFreeDebugAndroidTest
+            status=$?
+            echo "===== MYKIOS CRASH LOG ====="
+            adb logcat -d -v threadtime | grep -E -A 80 -B 20 "FATAL EXCEPTION|AndroidRuntime|Process: com\.app\.mykios|com\.app\.mykios.*Exception" || true
+            adb logcat -d -v threadtime > runtime-logcat.txt || true
+            exit $status
+
+      - name: Upload runtime crash diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: runtime-crash-diagnostics
+          path: |
+            runtime-logcat.txt
+            app/build/reports/androidTests/connected/
+            app/build/outputs/androidTest-results/connected/
+          if-no-files-found: warn
