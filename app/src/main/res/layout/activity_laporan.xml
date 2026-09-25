@@ -14,7 +14,7 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="68dp"
-            app:navigationIcon="@android:drawable/ic_menu_revert"
+            app:navigationIcon="@drawable/ic_nav_back"
             app:navigationIconTint="@color/text_primary"
             app:title="Laporan"
             app:titleTextColor="@color/text_primary" />
@@ -162,7 +162,7 @@
                 android:textStyle="bold"
                 app:backgroundTint="@color/primary"
                 app:cornerRadius="16dp"
-                app:icon="@android:drawable/ic_menu_save" />
+                app:icon="@drawable/ic_nav_export" />
 
             <include layout="@layout/footer_brand" />
         </LinearLayout>
