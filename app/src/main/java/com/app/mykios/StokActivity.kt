@@ -41,7 +41,7 @@ class StokActivity : BaseActivity() {
     private lateinit var fabScanner: FloatingActionButton
     private lateinit var fabImport: FloatingActionButton
     private lateinit var fabToolbox: FloatingActionButton
-    private lateinit var fabMenuToggle: FloatingActionButton
+    private lateinit var fabMenuToggle: android.view.View
     private var isMenuOpen = false
     private var listBarang: List<Barang> = listOf()
 
@@ -153,18 +153,25 @@ class StokActivity : BaseActivity() {
             .show()
     }
 
+    private fun setMenuToggleIcon(resId: Int) {
+        when (val toggle = fabMenuToggle) {
+            is FloatingActionButton -> toggle.setImageResource(resId)
+            is ExtendedFloatingActionButton -> toggle.setIconResource(resId)
+        }
+    }
+
     private fun toggleFabMenu() {
         if (!isMenuOpen) {
             fabScanner.visibility = android.view.View.VISIBLE
             fabImport.visibility = android.view.View.VISIBLE
             fabToolbox.visibility = android.view.View.VISIBLE
-            fabMenuToggle.setImageResource(android.R.drawable.ic_menu_close_clear_cancel)
+            setMenuToggleIcon(android.R.drawable.ic_menu_close_clear_cancel)
             isMenuOpen = true
         } else {
             fabScanner.visibility = android.view.View.GONE
             fabImport.visibility = android.view.View.GONE
             fabToolbox.visibility = android.view.View.GONE
-            fabMenuToggle.setImageResource(android.R.drawable.ic_input_add)
+            setMenuToggleIcon(android.R.drawable.ic_input_add)
             isMenuOpen = false
         }
     }
