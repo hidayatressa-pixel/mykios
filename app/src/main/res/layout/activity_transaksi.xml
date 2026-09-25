@@ -15,7 +15,7 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="68dp"
-            app:navigationIcon="@android:drawable/ic_menu_revert"
+            app:navigationIcon="@drawable/ic_nav_back"
             app:navigationIconTint="@color/text_primary"
             app:title="Transaksi Baru"
             app:titleTextColor="@color/text_primary" />
@@ -59,9 +59,9 @@
             app:boxCornerRadiusTopEnd="16dp"
             app:boxCornerRadiusTopStart="16dp"
             app:boxStrokeColor="@color/primary"
-            app:endIconDrawable="@android:drawable/ic_menu_camera"
+            app:endIconDrawable="@drawable/ic_nav_scan"
             app:endIconMode="custom"
-            app:startIconDrawable="@android:drawable/ic_menu_search">
+            app:startIconDrawable="@drawable/ic_nav_more">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/searchBarang"
@@ -97,7 +97,7 @@
             android:layout_marginTop="12dp"
             app:cardBackgroundColor="@color/white"
             app:cardCornerRadius="22dp"
-            app:cardElevation="3dp"
+            app:cardElevation="0dp"
             app:strokeColor="@color/outline_soft"
             app:strokeWidth="1dp">
 
