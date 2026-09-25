@@ -100,24 +100,10 @@ class StokActivity : BaseActivity() {
             showTambahDialog()
         }
 
-        fabMenuToggle.setOnClickListener {
-            toggleFabMenu()
-        }
-
-        fabScanner.setOnClickListener { 
-            toggleFabMenu()
-            startScanner() 
-        }
-        
-        fabImport.setOnClickListener { 
-            toggleFabMenu()
-            showImportWarning() 
-        }
-        
-        fabToolbox.setOnClickListener { 
-            toggleFabMenu()
-            showToolbox() 
-        }
+        // Premium stock action dock: actions stay visible, no hidden gear/lock-style menu.
+        fabScanner.setOnClickListener { startScanner() }
+        fabImport.setOnClickListener { showImportWarning() }
+        fabToolbox.setOnClickListener { showToolbox() }
     }
 
     private fun updateSelectionUi(count: Int) {
