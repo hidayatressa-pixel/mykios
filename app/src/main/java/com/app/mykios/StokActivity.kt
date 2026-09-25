@@ -140,9 +140,8 @@ class StokActivity : BaseActivity() {
     }
 
     private fun setMenuToggleIcon(resId: Int) {
-        when (val toggle = fabMenuToggle) {
-            is FloatingActionButton -> toggle.setImageResource(resId)
-            is ExtendedFloatingActionButton -> toggle.setIconResource(resId)
+        if (fabMenuToggle is ExtendedFloatingActionButton) {
+            (fabMenuToggle as ExtendedFloatingActionButton).setIconResource(resId)
         }
     }
 
