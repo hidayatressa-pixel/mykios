@@ -3,7 +3,7 @@ package com.app.mykios
 import android.os.Bundle
 import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts
-import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.button.MaterialButton
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.Dispatchers
@@ -38,9 +38,9 @@ class StokActivity : BaseActivity() {
     private lateinit var btnCloseSelection: android.view.View
     private lateinit var btnDeleteSelected: android.view.View
     private lateinit var fab: ExtendedFloatingActionButton
-    private lateinit var fabScanner: FloatingActionButton
-    private lateinit var fabImport: FloatingActionButton
-    private lateinit var fabToolbox: FloatingActionButton
+    private lateinit var fabScanner: MaterialButton
+    private lateinit var fabImport: MaterialButton
+    private lateinit var fabToolbox: MaterialButton
     private lateinit var fabMenuToggle: android.view.View
     private var isMenuOpen = false
     private var listBarang: List<Barang> = listOf()
