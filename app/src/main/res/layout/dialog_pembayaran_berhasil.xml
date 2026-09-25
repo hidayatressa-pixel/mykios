@@ -41,14 +41,15 @@
         android:layout_marginTop="24dp"
         android:text="Kirim Nota via WA"
         app:cornerRadius="16dp"
-        app:icon="@android:drawable/stat_sys_speakerphone" />
+        app:icon="@drawable/ic_whatsapp_clean" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnOkBerhasil"
         android:layout_width="match_parent"
         android:layout_height="56dp"
         android:layout_marginTop="12dp"
-        android:text="SELESAI"
+        android:text="Selesai"
+        android:textAllCaps="false"
         app:cornerRadius="16dp"
         app:backgroundTint="@color/success" />
 
