@@ -49,6 +49,15 @@ class TransaksiActivity : BaseActivity() {
     private lateinit var printerHelper: BluetoothPrinterHelper
     private var pendingPrinterItems: List<Pair<Barang, Int>>? = null
 
+    private val scannerLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        if (result.resultCode == RESULT_OK) {
+            val code = result.data?.getStringExtra(ScannerActivity.EXTRA_SCAN_RESULT)
+            if (!code.isNullOrBlank()) {
+                findViewById<EditText>(R.id.searchBarang).setText(code)
+            }
+        }
+    }
+
     private val bluetoothPermissionLauncher =
         registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { result ->
             val connectGranted = android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.S ||
@@ -99,7 +108,10 @@ class TransaksiActivity : BaseActivity() {
 
         val tilSearch = findViewById<com.google.android.material.textfield.TextInputLayout>(R.id.tilSearch)
         tilSearch.setEndIconOnClickListener {
-            startActivityForResult(Intent(this, ScannerActivity::class.java), 1001)
+            scannerLauncher.launch(
+                Intent(this, ScannerActivity::class.java)
+                    .putExtra(ScannerActivity.EXTRA_MODE, ScannerActivity.MODE_CASHIER)
+            )
         }
         
         tilSearch.setStartIconOnClickListener {
@@ -187,16 +199,6 @@ class TransaksiActivity : BaseActivity() {
             speechLauncher.launch(intent)
         } catch (e: Exception) {
             Toast.makeText(this, "Voice recognition tidak tersedia", Toast.LENGTH_SHORT).show()
-        }
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == 1001 && resultCode == RESULT_OK) {
-            val code = data?.getStringExtra("SCAN_RESULT")
-            if (!code.isNullOrEmpty()) {
-                findViewById<EditText>(R.id.searchBarang).setText(code)
-            }
         }
     }
 
