@@ -8,12 +8,13 @@
     android:padding="32dp">
 
     <com.google.android.material.card.MaterialCardView
-        android:layout_width="240dp"
-        android:layout_height="240dp"
-        app:cardCornerRadius="120dp"
+        android:layout_width="220dp"
+        android:layout_height="220dp"
+        app:cardBackgroundColor="@color/primaryContainer"
+        app:cardCornerRadius="48dp"
         app:cardElevation="0dp"
         app:strokeWidth="1dp"
-        app:strokeColor="#0D000000">
+        app:strokeColor="@color/outline_soft">
 
         <FrameLayout
             android:layout_width="match_parent"
@@ -24,7 +25,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:padding="54dp"
-                android:src="@android:drawable/ic_menu_add"
+                android:src="@drawable/ic_box_premium"
                 android:contentDescription="Slide Image"
                 app:tint="@color/primary" />
 
@@ -43,10 +44,10 @@
         android:id="@+id/tvTitleOnboarding"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="48dp"
+        android:layout_marginTop="36dp"
         android:text="Title"
         android:textAppearance="?attr/textAppearanceHeadlineMedium"
-        android:textColor="@color/primary"
+        android:textColor="@color/text_primary"
         android:textStyle="bold"
         android:gravity="center" />
 
