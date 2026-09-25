@@ -80,60 +80,84 @@
         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="6dp" android:gravity="center" android:text="Tambahkan barang pertama untuk mulai mengelola stok." android:textColor="@color/text_secondary" android:textSize="13sp"/>
     </LinearLayout>
 
-    <com.google.android.material.card.MaterialCardView
+    <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="56dp"
         android:layout_gravity="bottom|start"
         android:layout_marginStart="16dp"
         android:layout_marginBottom="20dp"
-        app:cardBackgroundColor="@color/surface"
-        app:cardCornerRadius="24dp"
-        app:cardElevation="6dp"
-        app:strokeColor="@color/outline_soft"
-        app:strokeWidth="1dp">
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:orientation="horizontal"
-            android:padding="6dp">
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/fabScanner"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:contentDescription="Scan barang"
-                app:backgroundTint="@color/surface"
-                app:fabSize="mini"
-                app:srcCompat="@drawable/ic_nav_scan"
-                app:tint="@color/primary"/>
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/fabImport"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="4dp"
-                android:contentDescription="Import data"
-                app:backgroundTint="@color/surface"
-                app:fabSize="mini"
-                app:srcCompat="@drawable/ic_nav_import"
-                app:tint="@color/primary"/>
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/fabToolbox"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="4dp"
-                android:contentDescription="Alat stok"
-                app:backgroundTint="@color/surface"
-                app:fabSize="mini"
-                app:srcCompat="@drawable/ic_nav_tools"
-                app:tint="@color/primary"/>
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/fabMenuToggle"
-                android:layout_width="1dp"
-                android:layout_height="1dp"
-                android:visibility="gone"
-                android:contentDescription="Menu"/>
-        </LinearLayout>
-    </com.google.android.material.card.MaterialCardView>
+        android:background="@android:color/transparent"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/fabScanner"
+            style="@style/Widget.Material3.Button.TonalButton"
+            android:layout_width="52dp"
+            android:layout_height="52dp"
+            android:contentDescription="Scan barang"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            android:minWidth="0dp"
+            android:padding="0dp"
+            android:text=""
+            app:backgroundTint="@color/primaryContainer"
+            app:cornerRadius="16dp"
+            app:icon="@drawable/ic_nav_scan"
+            app:iconGravity="textStart"
+            app:iconPadding="0dp"
+            app:iconTint="@color/primary"
+            app:iconSize="22dp"
+            app:strokeWidth="0dp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/fabImport"
+            style="@style/Widget.Material3.Button.TonalButton"
+            android:layout_width="52dp"
+            android:layout_height="52dp"
+            android:layout_marginStart="8dp"
+            android:contentDescription="Download atau import stok"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            android:minWidth="0dp"
+            android:padding="0dp"
+            android:text=""
+            app:backgroundTint="@color/primaryContainer"
+            app:cornerRadius="16dp"
+            app:icon="@drawable/ic_nav_import"
+            app:iconGravity="textStart"
+            app:iconPadding="0dp"
+            app:iconTint="@color/primary"
+            app:iconSize="22dp"
+            app:strokeWidth="0dp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/fabToolbox"
+            style="@style/Widget.Material3.Button.TonalButton"
+            android:layout_width="52dp"
+            android:layout_height="52dp"
+            android:layout_marginStart="8dp"
+            android:contentDescription="Barcode dan pengaturan stok"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            android:minWidth="0dp"
+            android:padding="0dp"
+            android:text=""
+            app:backgroundTint="@color/primaryContainer"
+            app:cornerRadius="16dp"
+            app:icon="@drawable/ic_nav_tools"
+            app:iconGravity="textStart"
+            app:iconPadding="0dp"
+            app:iconTint="@color/primary"
+            app:iconSize="22dp"
+            app:strokeWidth="0dp" />
+
+        <View
+            android:id="@+id/fabMenuToggle"
+            android:layout_width="1dp"
+            android:layout_height="1dp"
+            android:visibility="gone" />
+    </LinearLayout>
 
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
         android:id="@+id/fabTambahBarang"
