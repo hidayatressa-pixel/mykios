@@ -8,16 +8,16 @@
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/brand_navy"
+        android:background="@color/surface"
         app:elevation="0dp">
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="64dp"
-            app:navigationIcon="@android:drawable/ic_menu_revert"
-            app:navigationIconTint="@color/white"
+            android:layout_height="68dp"
+            app:navigationIcon="@drawable/ic_nav_back"
+            app:navigationIconTint="@color/text_primary"
             app:title="Laporan"
-            app:titleTextColor="@color/white" />
+            app:titleTextColor="@color/text_primary" />
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.core.widget.NestedScrollView
@@ -55,7 +55,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="270dp"
                 android:layout_marginBottom="12dp"
-                app:cardBackgroundColor="@color/white"
+                app:cardBackgroundColor="@color/surface"
                 app:cardCornerRadius="22dp"
                 app:cardElevation="0dp"
                 app:strokeColor="@color/outline_soft"
@@ -93,7 +93,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="240dp"
                 android:layout_marginBottom="12dp"
-                app:cardBackgroundColor="@color/white"
+                app:cardBackgroundColor="@color/surface"
                 app:cardCornerRadius="22dp"
                 app:cardElevation="0dp"
                 app:strokeColor="@color/outline_soft"
@@ -125,7 +125,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="12dp"
                 android:visibility="gone"
-                app:cardBackgroundColor="@color/white"
+                app:cardBackgroundColor="@color/surface"
                 app:cardCornerRadius="22dp"
                 app:cardElevation="0dp"
                 app:strokeColor="@color/outline_soft"
@@ -162,7 +162,7 @@
                 android:textStyle="bold"
                 app:backgroundTint="@color/primary"
                 app:cornerRadius="16dp"
-                app:icon="@android:drawable/ic_menu_save" />
+                app:icon="@drawable/ic_nav_export" />
 
             <include layout="@layout/footer_brand" />
         </LinearLayout>

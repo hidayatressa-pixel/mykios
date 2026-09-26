@@ -54,7 +54,7 @@ class NotificationHelper(private val context: Context) {
 
     fun showTransaksiBerhasil(total: String) {
         val notification = NotificationCompat.Builder(context, CHANNEL_TRANSAKSI)
-            .setSmallIcon(R.drawable.logo_mykios)
+            .setSmallIcon(R.drawable.ic_notification_mykios)
             .setContentTitle("Transaksi Berhasil!")
             .setContentText("Total pembayaran: $total")
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
@@ -66,7 +66,7 @@ class NotificationHelper(private val context: Context) {
 
     fun showStockAdded(nama: String, jumlah: Int) {
         val notification = NotificationCompat.Builder(context, CHANNEL_STOK)
-            .setSmallIcon(R.drawable.logo_mykios)
+            .setSmallIcon(R.drawable.ic_notification_mykios)
             .setContentTitle("Stok Bertambah")
             .setContentText("$nama baru saja ditambah sebanyak $jumlah")
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
@@ -78,7 +78,7 @@ class NotificationHelper(private val context: Context) {
 
     fun showUpgradeSuccess() {
         val notification = NotificationCompat.Builder(context, CHANNEL_SYSTEM)
-            .setSmallIcon(R.drawable.logo_mykios)
+            .setSmallIcon(R.drawable.ic_notification_mykios)
             .setContentTitle("Akun PRO Aktif! 🎉")
             .setContentText("Selamat! Anda sekarang memiliki akses penuh ke semua fitur My Kios.")
             .setPriority(NotificationCompat.PRIORITY_HIGH)
@@ -93,7 +93,7 @@ class NotificationHelper(private val context: Context) {
         val message = if (isPro) "Nikmati fitur eksklusif untuk bisnis Anda." else "Ayo kelola warung Anda jadi lebih modern."
 
         val notification = NotificationCompat.Builder(context, CHANNEL_SYSTEM)
-            .setSmallIcon(R.drawable.logo_mykios)
+            .setSmallIcon(R.drawable.ic_notification_mykios)
             .setContentTitle(title)
             .setContentText(message)
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
@@ -105,7 +105,7 @@ class NotificationHelper(private val context: Context) {
     
     fun showNotaDownloaded(fileName: String) {
         val notification = NotificationCompat.Builder(context, CHANNEL_SYSTEM)
-            .setSmallIcon(R.drawable.logo_mykios)
+            .setSmallIcon(R.drawable.ic_notification_mykios)
             .setContentTitle("Nota Berhasil Disimpan")
             .setContentText("File $fileName telah tersimpan di perangkat Anda.")
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)

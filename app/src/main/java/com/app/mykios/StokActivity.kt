@@ -3,7 +3,7 @@ package com.app.mykios
 import android.os.Bundle
 import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts
-import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.button.MaterialButton
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.Dispatchers
@@ -38,10 +38,10 @@ class StokActivity : BaseActivity() {
     private lateinit var btnCloseSelection: android.view.View
     private lateinit var btnDeleteSelected: android.view.View
     private lateinit var fab: ExtendedFloatingActionButton
-    private lateinit var fabScanner: FloatingActionButton
-    private lateinit var fabImport: FloatingActionButton
-    private lateinit var fabToolbox: FloatingActionButton
-    private lateinit var fabMenuToggle: FloatingActionButton
+    private lateinit var fabScanner: MaterialButton
+    private lateinit var fabImport: MaterialButton
+    private lateinit var fabToolbox: MaterialButton
+    private lateinit var fabMenuToggle: android.view.View
     private var isMenuOpen = false
     private var listBarang: List<Barang> = listOf()
 
@@ -100,24 +100,10 @@ class StokActivity : BaseActivity() {
             showTambahDialog()
         }
 
-        fabMenuToggle.setOnClickListener {
-            toggleFabMenu()
-        }
-
-        fabScanner.setOnClickListener { 
-            toggleFabMenu()
-            startScanner() 
-        }
-        
-        fabImport.setOnClickListener { 
-            toggleFabMenu()
-            showImportWarning() 
-        }
-        
-        fabToolbox.setOnClickListener { 
-            toggleFabMenu()
-            showToolbox() 
-        }
+        // Premium stock action dock: actions stay visible, no hidden gear/lock-style menu.
+        fabScanner.setOnClickListener { startScanner() }
+        fabImport.setOnClickListener { showImportWarning() }
+        fabToolbox.setOnClickListener { showToolbox() }
     }
 
     private fun updateSelectionUi(count: Int) {
@@ -153,18 +139,24 @@ class StokActivity : BaseActivity() {
             .show()
     }
 
+    private fun setMenuToggleIcon(resId: Int) {
+        if (fabMenuToggle is ExtendedFloatingActionButton) {
+            (fabMenuToggle as ExtendedFloatingActionButton).setIconResource(resId)
+        }
+    }
+
     private fun toggleFabMenu() {
         if (!isMenuOpen) {
             fabScanner.visibility = android.view.View.VISIBLE
             fabImport.visibility = android.view.View.VISIBLE
             fabToolbox.visibility = android.view.View.VISIBLE
-            fabMenuToggle.setImageResource(android.R.drawable.ic_menu_close_clear_cancel)
+            setMenuToggleIcon(android.R.drawable.ic_menu_close_clear_cancel)
             isMenuOpen = true
         } else {
             fabScanner.visibility = android.view.View.GONE
             fabImport.visibility = android.view.View.GONE
             fabToolbox.visibility = android.view.View.GONE
-            fabMenuToggle.setImageResource(android.R.drawable.ic_input_add)
+            setMenuToggleIcon(android.R.drawable.ic_input_add)
             isMenuOpen = false
         }
     }

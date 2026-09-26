@@ -15,6 +15,12 @@ import kotlinx.coroutines.withContext
 
 class ScannerActivity : BaseActivity() {
 
+    companion object {
+        const val EXTRA_MODE = "SCANNER_MODE"
+        const val MODE_CASHIER = "CASHIER"
+        const val EXTRA_SCAN_RESULT = "SCAN_RESULT"
+    }
+
     private lateinit var barcodeView: CompoundBarcodeView
     private var isProcessing = false
     private var isFlashOn = false
@@ -82,9 +88,9 @@ class ScannerActivity : BaseActivity() {
     }
 
     private fun showScanResultPopup(code: String) {
-        if (callingActivity != null && callingActivity!!.className.contains("TransaksiActivity")) {
+        if (intent.getStringExtra(EXTRA_MODE) == MODE_CASHIER) {
             val intent = android.content.Intent()
-            intent.putExtra("SCAN_RESULT", code)
+            intent.putExtra(EXTRA_SCAN_RESULT, code)
             setResult(RESULT_OK, intent)
             finish()
             return

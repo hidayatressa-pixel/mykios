@@ -8,17 +8,17 @@
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/brand_navy"
+        android:background="@color/surface"
         app:elevation="0dp">
 
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="64dp"
-            app:navigationIcon="@android:drawable/ic_menu_revert"
-            app:navigationIconTint="@color/white"
+            android:layout_height="68dp"
+            app:navigationIcon="@drawable/ic_nav_back"
+            app:navigationIconTint="@color/text_primary"
             app:title="Transaksi Baru"
-            app:titleTextColor="@color/white" />
+            app:titleTextColor="@color/text_primary" />
     </com.google.android.material.appbar.AppBarLayout>
 
     <LinearLayout
@@ -53,15 +53,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Cari atau Scan Barang"
-            app:boxBackgroundColor="@color/white"
+            app:boxBackgroundColor="@color/surface"
             app:boxCornerRadiusBottomEnd="16dp"
             app:boxCornerRadiusBottomStart="16dp"
             app:boxCornerRadiusTopEnd="16dp"
             app:boxCornerRadiusTopStart="16dp"
             app:boxStrokeColor="@color/primary"
-            app:endIconDrawable="@android:drawable/ic_menu_camera"
+            app:endIconDrawable="@drawable/ic_nav_scan"
             app:endIconMode="custom"
-            app:startIconDrawable="@android:drawable/ic_menu_search">
+            app:startIconDrawable="@drawable/ic_nav_more">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/searchBarang"
@@ -75,7 +75,7 @@
             android:layout_height="0dp"
             android:layout_marginTop="12dp"
             android:layout_weight="1"
-            app:cardBackgroundColor="@color/white"
+            app:cardBackgroundColor="@color/surface"
             app:cardCornerRadius="20dp"
             app:cardElevation="0dp"
             app:strokeColor="@color/outline_soft"
@@ -95,9 +95,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
-            app:cardBackgroundColor="@color/white"
+            app:cardBackgroundColor="@color/surface"
             app:cardCornerRadius="22dp"
-            app:cardElevation="3dp"
+            app:cardElevation="0dp"
             app:strokeColor="@color/outline_soft"
             app:strokeWidth="1dp">
 

@@ -7,13 +7,19 @@
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@color/surface"
+        app:elevation="0dp">
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
+            android:layout_height="68dp"
             app:title="MYKIOS PRO"
-            app:navigationIcon="@android:drawable/ic_menu_revert" />
+            app:subtitle="Fitur lengkap untuk usaha Anda"
+            app:titleTextColor="@color/text_primary"
+            app:subtitleTextColor="@color/text_secondary"
+            app:navigationIcon="@drawable/ic_nav_back"
+            app:navigationIconTint="@color/text_primary" />
     </com.google.android.material.appbar.AppBarLayout>
 
     <ScrollView
@@ -24,7 +30,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="24dp">
+            android:padding="18dp">
 
             <TextView
                 android:layout_width="match_parent"
@@ -59,10 +65,12 @@
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnSubscribe"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="56dp"
                 android:layout_marginTop="24dp"
                 android:enabled="false"
-                android:text="Aktifkan PRO" />
+                android:text="Aktifkan PRO"
+                android:textAllCaps="false"
+                app:cornerRadius="16dp" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnRestore"
