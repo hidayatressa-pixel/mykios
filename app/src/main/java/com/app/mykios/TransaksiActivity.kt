@@ -286,7 +286,6 @@ class TransaksiActivity : BaseActivity() {
                     else db.transaksiDao().createCreditSale(transaksi, items, hutang)
                 withContext(Dispatchers.Main) {
                     if (metode == "QRIS") {
-                        SessionManager(this@TransaksiActivity).addSaldoDigital(totalAkhir)
                         showPreviewNotaDialog(transaksiId, items, metode)
                     } else showActionDialog(transaksiId, items, metode)
                 }
