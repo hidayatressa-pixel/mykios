@@ -45,7 +45,7 @@ class RegisterActivity : BaseActivity() {
         val actKategori = findViewById<AutoCompleteTextView>(R.id.actKategori)
         val btnRegister = findViewById<Button>(R.id.btnRegister)
 
-        val kategoriList = arrayOf("Sembako / Warung", "Konveksi / Pakaian", "Bengkel", "Elektronik", "Makanan & Minuman", "Lainnya")
+        val kategoriList = arrayOf("Sembako / Warung", "Fotokopi & ATK", "Konveksi / Pakaian", "Bengkel", "Elektronik", "Makanan & Minuman", "Lainnya")
         val adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, kategoriList)
         actKategori.setAdapter(adapter)
 
