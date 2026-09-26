@@ -21,7 +21,8 @@
             app:titleTextColor="@color/text_primary"
             app:subtitleTextColor="@color/text_secondary"
             app:navigationIcon="@drawable/ic_nav_back"
-            app:navigationIconTint="@color/text_primary" />
+            app:navigationIconTint="@color/text_primary"
+            app:menu="@menu/menu_stok" />
 
         <RelativeLayout
             android:id="@+id/layoutSelection"
