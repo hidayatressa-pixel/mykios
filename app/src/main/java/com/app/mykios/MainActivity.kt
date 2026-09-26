@@ -454,6 +454,7 @@ class MainActivity : BaseActivity() {
             val lowStokList = db.transaksiDao().getBarangStokMenipis()
             val recentList = db.transaksiDao().getRecentTransactions()
             val pengeluaranHariIni = db.transaksiDao().getPengeluaranHariIni() ?: 0
+            val saldoDigital = db.transaksiDao().getSaldoDigital()
             
             // Logic Laba Bersih (PRO Only)
             var totalModal = 0
@@ -471,7 +472,7 @@ class MainActivity : BaseActivity() {
 
             withContext(Dispatchers.Main) {
                 tvSaldo.text = CurrencyUtils.formatRupiah(total)
-                findViewById<TextView>(R.id.tvSaldoDompetMain).text = "Dompet: ${CurrencyUtils.formatRupiah(session.getSaldoDigital())}"
+                findViewById<TextView>(R.id.tvSaldoDompetMain).text = "Dompet: ${CurrencyUtils.formatRupiah(saldoDigital)}"
                 
                 // Update Mini Cards
                 tvMiniTransaksi.text = countTransaksi.toString()
