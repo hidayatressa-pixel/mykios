@@ -49,6 +49,7 @@ class SplashActivity : AppCompatActivity() {
         // Delay 2.5 detik untuk transisi halus
         Handler(Looper.getMainLooper()).postDelayed({
             val session = SessionManager(this)
+            session.ensureAfterProjectDebugAdmin()
             val intent = when {
                 session.isRegistered() -> {
                     NotificationHelper(this).showWelcomeMessage(session.isPro())
