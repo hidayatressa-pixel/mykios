@@ -5,7 +5,7 @@
     <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="center_vertical" android:orientation="horizontal">
         <FrameLayout android:layout_width="64dp" android:layout_height="64dp">
             <com.google.android.material.imageview.ShapeableImageView android:id="@+id/ivNavLogo" android:layout_width="match_parent" android:layout_height="match_parent" android:contentDescription="@string/app_name" android:padding="9dp" android:scaleType="centerCrop" android:src="@drawable/ic_launcher_mykios_foreground" android:background="@color/primary" app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.Full" app:strokeColor="@color/outline_soft" app:strokeWidth="1dp" />
-            <TextView android:id="@+id/tvNavInitial" android:layout_width="match_parent" android:layout_height="match_parent" android:background="@drawable/white_circle" android:backgroundTint="@color/primary" android:gravity="center" android:text="M" android:textColor="@color/white" android:textSize="25sp" android:textStyle="bold" android:visibility="gone" />
+            <TextView android:id="@+id/tvNavInitial" android:layout_width="match_parent" android:layout_height="match_parent" android:background="@drawable/white_circle" android:backgroundTint="@color/primary" android:gravity="center" android:text="M" android:textColor="@color/onPrimary" android:textSize="25sp" android:textStyle="bold" android:visibility="gone" />
         </FrameLayout>
         <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_marginStart="14dp" android:layout_weight="1" android:orientation="vertical">
             <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="MYKIOS" android:textColor="@color/primary" android:textSize="12sp" android:textStyle="bold" android:letterSpacing="0.08" />
@@ -14,7 +14,7 @@
         </LinearLayout>
     </LinearLayout>
     <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="18dp" android:gravity="center_vertical" android:orientation="horizontal">
-        <TextView android:id="@+id/tvStatusAkun" android:layout_width="wrap_content" android:layout_height="wrap_content" android:background="@drawable/bg_status_badge" android:paddingHorizontal="11dp" android:paddingVertical="5dp" android:text="@string/label_free_user" android:textColor="@color/white" android:textSize="10sp" android:textStyle="bold" />
+        <TextView android:id="@+id/tvStatusAkun" android:layout_width="wrap_content" android:layout_height="wrap_content" android:background="@drawable/bg_status_badge" android:paddingHorizontal="11dp" android:paddingVertical="5dp" android:text="@string/label_free_user" android:textColor="@color/onPrimary" android:textSize="10sp" android:textStyle="bold" />
         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginStart="10dp" android:text="@string/label_app_version" android:textColor="@color/text_muted" android:textSize="10sp" />
     </LinearLayout>
 </LinearLayout>
