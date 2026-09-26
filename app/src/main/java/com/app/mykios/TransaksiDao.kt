@@ -129,6 +129,12 @@ interface TransaksiDao {
     @Query("SELECT * FROM transaksi ORDER BY tanggal DESC")
     fun getAllTransaksi(): List<Transaksi>
 
+    @Query("SELECT COALESCE(SUM(total), 0) FROM transaksi WHERE metode = 'QRIS'")
+    fun getSaldoDigital(): Long
+
+    @Query("SELECT * FROM transaksi WHERE metode = 'QRIS' ORDER BY tanggal DESC")
+    fun getTransaksiDigital(): List<Transaksi>
+
     @Query("SELECT * FROM hutang ORDER BY jatuhTempo ASC")
     fun getAllHutang(): List<Hutang>
 
