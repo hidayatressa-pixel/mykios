@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- MYKIOS Premium Dark Navy: medium depth, not black and not bright blue -->
-    <color name="primary">#818CF8</color>
+    <color name="primary">#8B8CFF</color>
     <color name="onPrimary">#18213A</color>
-    <color name="primaryContainer">#303A5A</color>
+    <color name="primaryContainer">#2A3554</color>
     <color name="onPrimaryContainer">#EEF0FF</color>
 
     <color name="secondary">#7DA6E8</color>
@@ -17,13 +17,13 @@
     <color name="brand_blue">#7DA6E8</color>
     <color name="brand_violet">#A78BFA</color>
 
-    <color name="background">#172033</color>
+    <color name="background">#121A2A</color>
     <color name="onBackground">#F2F5FA</color>
-    <color name="surface">#202B40</color>
+    <color name="surface">#1B263A</color>
     <color name="onSurface">#F2F5FA</color>
-    <color name="surfaceVariant">#29364D</color>
+    <color name="surfaceVariant">#253249</color>
     <color name="onSurfaceVariant">#AAB6C8</color>
-    <color name="surface_soft">#1C2639</color>
+    <color name="surface_soft">#172235</color>
 
     <color name="text_primary">#F1F5F9</color>
     <color name="text_secondary">#AAB6C8</color>
@@ -39,6 +39,6 @@
     <color name="error">#FF8585</color>
 
     <color name="white">#F4F6FA</color>
-    <color name="divider">#39475E</color>
-    <color name="outline_soft">#39475E</color>
+    <color name="divider">#34425A</color>
+    <color name="outline_soft">#34425A</color>
 </resources>
