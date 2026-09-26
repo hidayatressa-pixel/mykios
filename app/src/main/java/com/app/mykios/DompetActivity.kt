@@ -33,7 +33,7 @@ class DompetActivity : BaseActivity() {
         tvSaldo = findViewById(R.id.tvSaldoDompet)
         rvHistory = findViewById(R.id.rvTransaksiDigital)
 
-        tvSaldo.text = CurrencyUtils.formatRupiah(session.getSaldoDigital())
+        tvSaldo.text = CurrencyUtils.formatRupiah(0)
 
         findViewById<android.view.View>(R.id.btnTarikSaldo).setOnClickListener {
             Toast.makeText(this, "Fitur Penarikan hanya untuk Akun yang Terverifikasi!", Toast.LENGTH_LONG).show()
@@ -45,8 +45,10 @@ class DompetActivity : BaseActivity() {
     private fun loadHistory() {
         rvHistory.layoutManager = LinearLayoutManager(this)
         lifecycleScope.launch(Dispatchers.IO) {
-            val transactions = db.transaksiDao().getAllTransaksi().filter { it.metode == "QRIS" }
+            val saldo = db.transaksiDao().getSaldoDigital()
+            val transactions = db.transaksiDao().getTransaksiDigital()
             withContext(Dispatchers.Main) {
+                tvSaldo.text = CurrencyUtils.formatRupiah(saldo)
                 rvHistory.adapter = RecentTransaksiAdapter(transactions)
             }
         }
