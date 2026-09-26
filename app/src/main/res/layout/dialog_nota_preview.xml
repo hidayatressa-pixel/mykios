@@ -41,7 +41,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="monospace"
                     android:text="Nota Content Here..."
-                    android:textColor="#333333"
+                    android:textColor="@color/text_primary"
                     android:textSize="13sp"
                     android:lineSpacingExtra="4dp" />
             </ScrollView>
