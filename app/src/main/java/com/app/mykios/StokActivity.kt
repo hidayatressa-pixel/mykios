@@ -266,6 +266,21 @@ class StokActivity : BaseActivity() {
         }
     }
 
+    private val createStockTemplate = registerForActivityResult(
+        ActivityResultContracts.CreateDocument("text/csv")
+    ) { uri ->
+        uri ?: return@registerForActivityResult
+        try {
+            contentResolver.openOutputStream(uri)?.bufferedWriter()?.use { writer ->
+                writer.appendLine("Nama Barang,Harga Jual,Stok,Barcode/Kode,Satuan,Kategori,Warna,Ukuran")
+                writer.appendLine("Kertas A4,50000,10,ATK-A4-001,Rim,ATK,,A4")
+            }
+            Toast.makeText(this, "Template stok berhasil disimpan", Toast.LENGTH_SHORT).show()
+        } catch (e: Exception) {
+            Toast.makeText(this, "Gagal menyimpan template", Toast.LENGTH_LONG).show()
+        }
+    }
+
     private fun showImportWarning() {
         val session = SessionManager(this)
         if (!session.isPro() && !session.isDev()) {
@@ -274,6 +289,9 @@ class StokActivity : BaseActivity() {
         }
 
         val dialogView = layoutInflater.inflate(R.layout.dialog_import_onboarding, null)
+        dialogView.findViewById<MaterialButton>(R.id.btnDownloadTemplate).setOnClickListener {
+            createStockTemplate.launch("Template_Stok_MYKIOS.csv")
+        }
         
         MaterialAlertDialogBuilder(this)
             .setView(dialogView)
