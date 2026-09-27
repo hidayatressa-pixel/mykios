@@ -129,16 +129,16 @@ interface TransaksiDao {
     @Query("SELECT * FROM transaksi ORDER BY tanggal DESC")
     fun getAllTransaksi(): List<Transaksi>
 
-    @Query("SELECT COALESCE(SUM(total), 0) FROM transaksi WHERE metode = 'QRIS'")
+    @Query("SELECT COALESCE(SUM(total), 0) FROM transaksi WHERE metode = 'QRIS' OR metode = 'HUTANG_LUNAS_QRIS'")
     fun getSaldoDigital(): Long
 
-    @Query("SELECT * FROM transaksi WHERE metode = 'QRIS' ORDER BY tanggal DESC")
+    @Query("SELECT * FROM transaksi WHERE metode = 'QRIS' OR metode = 'HUTANG_LUNAS_QRIS' ORDER BY tanggal DESC")
     fun getTransaksiDigital(): List<Transaksi>
 
     @Query("SELECT * FROM hutang ORDER BY jatuhTempo ASC")
     fun getAllHutang(): List<Hutang>
 
-    @Query("SELECT SUM(total) as total, date(tanggal/1000, 'unixepoch', 'localtime') as tanggal FROM transaksi WHERE metode != 'HUTANG_LUNAS' GROUP BY date(tanggal/1000, 'unixepoch', 'localtime') ORDER BY tanggal DESC LIMIT 7")
+    @Query("SELECT SUM(total) as total, date(tanggal/1000, 'unixepoch', 'localtime') as tanggal FROM transaksi WHERE metode NOT LIKE 'HUTANG_LUNAS%' GROUP BY date(tanggal/1000, 'unixepoch', 'localtime') ORDER BY tanggal DESC LIMIT 7")
     fun getSalesLast7Days(): List<SalesData>
 
     @Query("SELECT * FROM barang WHERE stok <= 5")
@@ -149,6 +149,20 @@ interface TransaksiDao {
 
     @Update
     suspend fun updateHutang(hutang: Hutang)
+
+    @Transaction
+    suspend fun settleDebt(hutang: Hutang, paymentMethod: String) {
+        require(!hutang.lunas) { "Hutang sudah lunas" }
+        require(paymentMethod == "CASH" || paymentMethod == "QRIS") { "Metode pelunasan tidak valid" }
+        updateHutang(hutang.copy(lunas = true))
+        insertTransaksi(
+            Transaksi(
+                tanggal = System.currentTimeMillis(),
+                total = hutang.jumlah,
+                metode = "HUTANG_LUNAS_$paymentMethod"
+            )
+        )
+    }
 
     @Query("SELECT * FROM transaksi ORDER BY tanggal DESC LIMIT 5")
     fun getRecentTransactions(): List<Transaksi>
