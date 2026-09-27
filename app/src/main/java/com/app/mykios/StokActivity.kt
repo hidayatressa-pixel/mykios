@@ -755,18 +755,19 @@ class StokActivity : BaseActivity() {
         tilHarga.addView(inputHarga)
         layout.addView(tilHarga)
 
-        // PRO FEATURE: Harga Modal
+        // PRO FEATURE: Harga Modal. Free users see the locked field as an
+        // upgrade cue; PRO users get the normal editable field without a PRO label.
+        val hasProAccess = session.isPro() || session.isDev()
         val inputModal = TextInputEditText(this)
-        inputModal.hint = "Harga Modal (Hanya PRO)"
+        inputModal.hint = if (hasProAccess) "Harga Modal" else "Harga Modal (Hanya PRO)"
         inputModal.inputType = android.text.InputType.TYPE_CLASS_NUMBER
+        inputModal.isEnabled = hasProAccess
+        inputModal.isFocusable = hasProAccess
         inputModal.addTextChangedListener(CurrencyTextWatcher(inputModal))
         val tilModal = TextInputLayout(this)
         tilModal.setPadding(0, 12, 0, 0)
         tilModal.addView(inputModal)
-        
-        if (session.isPro() || session.isDev()) {
-            layout.addView(tilModal)
-        }
+        layout.addView(tilModal)
 
         val inputStok = TextInputEditText(this)
         inputStok.hint = "Stok Awal"
@@ -848,7 +849,7 @@ class StokActivity : BaseActivity() {
             val kode = inputKode.text.toString().ifEmpty { "MK-${(100..999).random()}-${System.currentTimeMillis() % 1000}" }
             
             val hargaString = CurrencyUtils.cleanCurrency(inputHarga.text.toString())
-            val modalString = CurrencyUtils.cleanCurrency(inputModal.text.toString())
+            val modalString = if (hasProAccess) CurrencyUtils.cleanCurrency(inputModal.text.toString()) else "0"
             val stokString = CurrencyUtils.cleanCurrency(inputStok.text.toString())
 
             val harga = hargaString.toIntOrNull() ?: 0
