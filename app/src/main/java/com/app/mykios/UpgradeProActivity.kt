@@ -89,7 +89,9 @@ class UpgradeProActivity : BaseActivity() {
 
     private fun renderPackages(packages: List<Package>) {
         packageContainer.removeAllViews()
-        selectedPackage = packages.firstOrNull()
+        if (selectedPackage == null || packages.none { it.identifier == selectedPackage?.identifier }) {
+            selectedPackage = packages.firstOrNull()
+        }
         packages.forEach { pkg ->
             val card = MaterialCardView(this).apply {
                 radius = 18f * resources.displayMetrics.density
