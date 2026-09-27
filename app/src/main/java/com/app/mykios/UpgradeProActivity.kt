@@ -34,14 +34,34 @@ class UpgradeProActivity : BaseActivity() {
         subscribe = findViewById(R.id.btnSubscribe)
         restore = findViewById(R.id.btnRestore)
 
-        if (session.isPro()) {
-            showProActive()
+        subscribe.setOnClickListener { selectedPackage?.let(::buy) }
+        restore.setOnClickListener { restorePurchase() }
+
+        if (!RevenueCatManager.isConfigured()) {
+            showConfigurationRequired()
             return
         }
 
-        subscribe.setOnClickListener { selectedPackage?.let(::buy) }
-        restore.setOnClickListener { restorePurchase() }
-        loadOffering()
+        refreshEntitlement()
+    }
+
+    private fun refreshEntitlement() {
+        setBusy(true, "Memeriksa status PRO...")
+        RevenueCatManager.refresh(
+            onResult = { active ->
+                runOnUiThread {
+                    session.setRevenueCatPro(active)
+                    if (active) showProActive() else loadOffering()
+                }
+            },
+            onError = {
+                runOnUiThread {
+                    // A temporary CustomerInfo refresh failure must not block the
+                    // paywall. Offerings can still be fetched from RevenueCat cache/network.
+                    loadOffering()
+                }
+            }
+        )
     }
 
     private fun loadOffering() {
@@ -105,6 +125,14 @@ class UpgradeProActivity : BaseActivity() {
         progress.visibility = View.GONE
         plan.text = "MYKIOS PRO AKTIF"
         status.text = "Semua fitur PRO yang tersedia pada versi ini sudah terbuka."
+        subscribe.visibility = View.GONE
+        restore.visibility = View.GONE
+    }
+
+    private fun showConfigurationRequired() {
+        progress.visibility = View.GONE
+        plan.text = "RevenueCat belum dikonfigurasi"
+        status.text = "Tambahkan public SDK key RevenueCat ke MYKIOS_REVENUECAT_API_KEY untuk menguji PRO."
         subscribe.visibility = View.GONE
         restore.visibility = View.GONE
     }
