@@ -4,9 +4,12 @@ import android.os.Bundle
 import android.view.View
 import android.widget.ProgressBar
 import android.widget.TextView
+import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
 import com.google.android.material.button.MaterialButton
+import com.google.android.material.card.MaterialCardView
+import com.google.android.material.color.MaterialColors
 import com.revenuecat.purchases.Package
 
 class UpgradeProActivity : BaseActivity() {
@@ -16,6 +19,7 @@ class UpgradeProActivity : BaseActivity() {
     private lateinit var status: TextView
     private lateinit var subscribe: MaterialButton
     private lateinit var restore: MaterialButton
+    private lateinit var packageContainer: LinearLayout
     private var selectedPackage: Package? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,6 +37,7 @@ class UpgradeProActivity : BaseActivity() {
         status = findViewById(R.id.tvStatus)
         subscribe = findViewById(R.id.btnSubscribe)
         restore = findViewById(R.id.btnRestore)
+        packageContainer = findViewById(R.id.layoutPackages)
 
         subscribe.setOnClickListener { selectedPackage?.let(::buy) }
         restore.setOnClickListener { restorePurchase() }
@@ -69,13 +74,11 @@ class UpgradeProActivity : BaseActivity() {
         RevenueCatManager.loadPackages(
             onResult = { packages ->
                 runOnUiThread {
-                    selectedPackage = packages.firstOrNull()
-                    val pkg = selectedPackage
-                    if (pkg == null) {
+                    if (packages.isEmpty()) {
                         showError("Paket PRO belum tersedia.")
                     } else {
-                        plan.text = "${pkg.product.title}\n${pkg.product.price.formatted}"
-                        status.text = "Harga dan periode mengikuti paket yang tersedia di Google Play."
+                        renderPackages(packages)
+                        status.text = "Pilih paket yang sesuai. Akses PRO aktif setelah pembelian terverifikasi."
                         setBusy(false)
                     }
                 }
@@ -83,6 +86,64 @@ class UpgradeProActivity : BaseActivity() {
             onError = { runOnUiThread { showError(it) } }
         )
     }
+
+    private fun renderPackages(packages: List<Package>) {
+        packageContainer.removeAllViews()
+        selectedPackage = packages.firstOrNull()
+        packages.forEach { pkg ->
+            val card = MaterialCardView(this).apply {
+                radius = 18f * resources.displayMetrics.density
+                cardElevation = 0f
+                strokeWidth = (1f * resources.displayMetrics.density).toInt()
+                setCardBackgroundColor(MaterialColors.getColor(this, com.google.android.material.R.attr.colorSurface))
+                setOnClickListener {
+                    selectedPackage = pkg
+                    renderPackages(packages)
+                }
+            }
+            val selected = pkg.identifier == selectedPackage?.identifier
+            card.strokeColor = MaterialColors.getColor(
+                card,
+                if (selected) com.google.android.material.R.attr.colorPrimary
+                else com.google.android.material.R.attr.colorOutline
+            )
+            val content = LinearLayout(this).apply {
+                orientation = LinearLayout.VERTICAL
+                setPadding(18.dp(), 15.dp(), 18.dp(), 15.dp())
+            }
+            val title = TextView(this).apply {
+                text = packageLabel(pkg)
+                setTextColor(MaterialColors.getColor(this, com.google.android.material.R.attr.colorOnSurface))
+                textSize = 15f
+                setTypeface(typeface, android.graphics.Typeface.BOLD)
+            }
+            val price = TextView(this).apply {
+                text = pkg.product.price.formatted
+                setTextColor(MaterialColors.getColor(this, com.google.android.material.R.attr.colorPrimary))
+                textSize = 18f
+                setTypeface(typeface, android.graphics.Typeface.BOLD)
+                setPadding(0, 5.dp(), 0, 0)
+            }
+            content.addView(title)
+            content.addView(price)
+            card.addView(content)
+            packageContainer.addView(card, LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+            ).apply { bottomMargin = 10.dp() })
+        }
+        plan.text = selectedPackage?.let { "Dipilih: ${packageLabel(it)} • ${it.product.price.formatted}" } ?: ""
+        subscribe.isEnabled = selectedPackage != null
+    }
+
+    private fun packageLabel(pkg: Package): String = when (pkg.identifier.lowercase()) {
+        "\$rc_monthly" -> "Bulanan"
+        "\$rc_annual", "\$rc_yearly" -> "Tahunan"
+        "\$rc_lifetime" -> "Lifetime"
+        else -> pkg.product.title.ifBlank { pkg.identifier }
+    }
+
+    private fun Int.dp(): Int = (this * resources.displayMetrics.density).toInt()
 
     private fun buy(pkg: Package) {
         setBusy(true, "Membuka Google Play...")
@@ -123,6 +184,7 @@ class UpgradeProActivity : BaseActivity() {
 
     private fun showProActive() {
         progress.visibility = View.GONE
+        packageContainer.visibility = View.GONE
         plan.text = "MYKIOS PRO AKTIF"
         status.text = "Semua fitur PRO yang tersedia pada versi ini sudah terbuka."
         subscribe.visibility = View.GONE
@@ -131,6 +193,7 @@ class UpgradeProActivity : BaseActivity() {
 
     private fun showConfigurationRequired() {
         progress.visibility = View.GONE
+        packageContainer.visibility = View.GONE
         plan.text = "RevenueCat belum dikonfigurasi"
         status.text = "Tambahkan public SDK key RevenueCat ke MYKIOS_REVENUECAT_API_KEY untuk menguji PRO."
         subscribe.visibility = View.GONE
