@@ -21,7 +21,7 @@ android {
             .orElse("")
             .get()
         buildConfigField("String", "REVENUECAT_API_KEY", "\"$revenueCatApiKey\"")
-        buildConfigField("String", "REVENUECAT_ENTITLEMENT", "\"pro\"")
+        buildConfigField("String", "REVENUECAT_ENTITLEMENT", "\"my_kios_pro\"")
     }
 
     packaging {
