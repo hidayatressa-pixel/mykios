@@ -66,6 +66,17 @@
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnDownloadTemplate"
+            style="@style/Widget.Material3.Button.TonalButton"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:layout_marginTop="14dp"
+            android:text="Unduh Template CSV"
+            android:textAllCaps="false"
+            app:cornerRadius="14dp"
+            app:icon="@drawable/ic_download_clean" />
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

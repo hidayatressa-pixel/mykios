@@ -9,8 +9,13 @@ import com.revenuecat.purchases.PurchasesConfiguration
 import com.revenuecat.purchases.interfaces.UpdatedCustomerInfoListener
 
 class MyKiosApplication : Application(), UpdatedCustomerInfoListener {
+    companion object {
+        lateinit var instance: MyKiosApplication
+            private set
+    }
     override fun onCreate() {
         super.onCreate()
+        instance = this
 
         // Apply the persisted theme once for the whole process. Doing this from
         // every Activity can trigger repeated recreation during startup.

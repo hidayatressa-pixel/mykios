@@ -3,7 +3,7 @@ package com.app.mykios
 import android.os.Bundle
 import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts
-import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.button.MaterialButton
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.Dispatchers
@@ -38,10 +38,10 @@ class StokActivity : BaseActivity() {
     private lateinit var btnCloseSelection: android.view.View
     private lateinit var btnDeleteSelected: android.view.View
     private lateinit var fab: ExtendedFloatingActionButton
-    private lateinit var fabScanner: FloatingActionButton
-    private lateinit var fabImport: FloatingActionButton
-    private lateinit var fabToolbox: FloatingActionButton
-    private lateinit var fabMenuToggle: FloatingActionButton
+    private lateinit var fabScanner: MaterialButton
+    private lateinit var fabImport: MaterialButton
+    private lateinit var fabToolbox: MaterialButton
+    private lateinit var fabMenuToggle: android.view.View
     private var isMenuOpen = false
     private var listBarang: List<Barang> = listOf()
 
@@ -100,24 +100,10 @@ class StokActivity : BaseActivity() {
             showTambahDialog()
         }
 
-        fabMenuToggle.setOnClickListener {
-            toggleFabMenu()
-        }
-
-        fabScanner.setOnClickListener { 
-            toggleFabMenu()
-            startScanner() 
-        }
-        
-        fabImport.setOnClickListener { 
-            toggleFabMenu()
-            showImportWarning() 
-        }
-        
-        fabToolbox.setOnClickListener { 
-            toggleFabMenu()
-            showToolbox() 
-        }
+        // Premium stock action dock: actions stay visible, no hidden gear/lock-style menu.
+        fabScanner.setOnClickListener { startScanner() }
+        fabImport.setOnClickListener { showImportWarning() }
+        fabToolbox.setOnClickListener { showToolbox() }
     }
 
     private fun updateSelectionUi(count: Int) {
@@ -153,18 +139,24 @@ class StokActivity : BaseActivity() {
             .show()
     }
 
+    private fun setMenuToggleIcon(resId: Int) {
+        if (fabMenuToggle is ExtendedFloatingActionButton) {
+            (fabMenuToggle as ExtendedFloatingActionButton).setIconResource(resId)
+        }
+    }
+
     private fun toggleFabMenu() {
         if (!isMenuOpen) {
             fabScanner.visibility = android.view.View.VISIBLE
             fabImport.visibility = android.view.View.VISIBLE
             fabToolbox.visibility = android.view.View.VISIBLE
-            fabMenuToggle.setImageResource(android.R.drawable.ic_menu_close_clear_cancel)
+            setMenuToggleIcon(android.R.drawable.ic_menu_close_clear_cancel)
             isMenuOpen = true
         } else {
             fabScanner.visibility = android.view.View.GONE
             fabImport.visibility = android.view.View.GONE
             fabToolbox.visibility = android.view.View.GONE
-            fabMenuToggle.setImageResource(android.R.drawable.ic_input_add)
+            setMenuToggleIcon(android.R.drawable.ic_input_add)
             isMenuOpen = false
         }
     }
@@ -201,7 +193,7 @@ class StokActivity : BaseActivity() {
 
         val options = arrayOf("Download Excel (CSV)", "Cetak Barcode Massal (PDF)", "Hubungkan Thermal Printer", "Hapus Semua Data Stok (Reset)")
         MaterialAlertDialogBuilder(this)
-            .setTitle("Toolbox Persediaan PRO")
+            .setTitle("Toolbox Persediaan")
             .setItems(options) { _, which ->
                 when (which) {
                     0 -> {
@@ -274,6 +266,21 @@ class StokActivity : BaseActivity() {
         }
     }
 
+    private val createStockTemplate = registerForActivityResult(
+        ActivityResultContracts.CreateDocument("text/csv")
+    ) { uri ->
+        uri ?: return@registerForActivityResult
+        try {
+            contentResolver.openOutputStream(uri)?.bufferedWriter()?.use { writer ->
+                writer.appendLine("Nama Barang,Harga Jual,Stok,Barcode/Kode,Satuan,Kategori,Warna,Ukuran")
+                writer.appendLine("Kertas A4,50000,10,ATK-A4-001,Rim,ATK,,A4")
+            }
+            Toast.makeText(this, "Template stok berhasil disimpan", Toast.LENGTH_SHORT).show()
+        } catch (e: Exception) {
+            Toast.makeText(this, "Gagal menyimpan template", Toast.LENGTH_LONG).show()
+        }
+    }
+
     private fun showImportWarning() {
         val session = SessionManager(this)
         if (!session.isPro() && !session.isDev()) {
@@ -282,6 +289,9 @@ class StokActivity : BaseActivity() {
         }
 
         val dialogView = layoutInflater.inflate(R.layout.dialog_import_onboarding, null)
+        dialogView.findViewById<MaterialButton>(R.id.btnDownloadTemplate).setOnClickListener {
+            createStockTemplate.launch("Template_Stok_MYKIOS.csv")
+        }
         
         MaterialAlertDialogBuilder(this)
             .setView(dialogView)
@@ -715,11 +725,27 @@ class StokActivity : BaseActivity() {
         val kategori = session.getKategori()
         
         val builder = MaterialAlertDialogBuilder(this)
-        builder.setTitle("Tambah Barang Baru")
+        builder.setTitle("Tambah Barang")
 
         val layout = LinearLayout(this)
         layout.orientation = LinearLayout.VERTICAL
-        layout.setPadding(60, 24, 60, 24)
+        layout.setPadding(52, 20, 52, 12)
+
+        val header = TextView(this).apply {
+            text = "Produk baru"
+            textSize = 20f
+            setTypeface(typeface, android.graphics.Typeface.BOLD)
+            setTextColor(com.google.android.material.color.MaterialColors.getColor(this, com.google.android.material.R.attr.colorOnSurface))
+            setPadding(0, 0, 0, 6)
+        }
+        val helper = TextView(this).apply {
+            text = "Lengkapi informasi utama barang. Data ini akan dipakai di stok dan transaksi."
+            textSize = 12f
+            setTextColor(com.google.android.material.color.MaterialColors.getColor(this, com.google.android.material.R.attr.colorOnSurfaceVariant))
+            setPadding(0, 0, 0, 18)
+        }
+        layout.addView(header)
+        layout.addView(helper)
 
         val inputNama = TextInputEditText(this)
         inputNama.hint = "Nama Barang"
@@ -745,18 +771,19 @@ class StokActivity : BaseActivity() {
         tilHarga.addView(inputHarga)
         layout.addView(tilHarga)
 
-        // PRO FEATURE: Harga Modal
+        // PRO FEATURE: Harga Modal. Free users see the locked field as an
+        // upgrade cue; PRO users get the normal editable field without a PRO label.
+        val hasProAccess = session.isPro() || session.isDev()
         val inputModal = TextInputEditText(this)
-        inputModal.hint = "Harga Modal (Hanya PRO)"
+        inputModal.hint = if (hasProAccess) "Harga Modal" else "Harga Modal (Hanya PRO)"
         inputModal.inputType = android.text.InputType.TYPE_CLASS_NUMBER
+        inputModal.isEnabled = hasProAccess
+        inputModal.isFocusable = hasProAccess
         inputModal.addTextChangedListener(CurrencyTextWatcher(inputModal))
         val tilModal = TextInputLayout(this)
         tilModal.setPadding(0, 12, 0, 0)
         tilModal.addView(inputModal)
-        
-        if (session.isPro() || session.isDev()) {
-            layout.addView(tilModal)
-        }
+        layout.addView(tilModal)
 
         val inputStok = TextInputEditText(this)
         inputStok.hint = "Stok Awal"
@@ -838,7 +865,7 @@ class StokActivity : BaseActivity() {
             val kode = inputKode.text.toString().ifEmpty { "MK-${(100..999).random()}-${System.currentTimeMillis() % 1000}" }
             
             val hargaString = CurrencyUtils.cleanCurrency(inputHarga.text.toString())
-            val modalString = CurrencyUtils.cleanCurrency(inputModal.text.toString())
+            val modalString = if (hasProAccess) CurrencyUtils.cleanCurrency(inputModal.text.toString()) else "0"
             val stokString = CurrencyUtils.cleanCurrency(inputStok.text.toString())
 
             val harga = hargaString.toIntOrNull() ?: 0

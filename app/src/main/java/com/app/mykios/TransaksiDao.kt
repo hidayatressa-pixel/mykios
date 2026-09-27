@@ -84,19 +84,30 @@ interface TransaksiDao {
         return transaksiId
     }
 
-    @Query("SELECT SUM(total) FROM transaksi WHERE tanggal >= :start AND tanggal <= :end")
+    @Transaction
+    suspend fun createCreditSale(
+        transaksi: Transaksi,
+        items: List<Pair<Barang, Int>>,
+        hutang: Hutang
+    ): Long {
+        val transaksiId = createSale(transaksi, items)
+        insertHutang(hutang)
+        return transaksiId
+    }
+
+    @Query("SELECT SUM(total) FROM transaksi WHERE tanggal >= :start AND tanggal <= :end AND metode NOT LIKE 'HUTANG_LUNAS%'")
     fun getTotalRange(start: Long, end: Long): Long?
 
     @Query("SELECT * FROM detail_transaksi WHERE transaksiId IN (SELECT id FROM transaksi WHERE tanggal >= :start AND tanggal <= :end)")
     fun getDetailTransaksiRange(start: Long, end: Long): List<DetailTransaksi>
 
-    @Query("SELECT SUM(total) FROM transaksi WHERE date(tanggal/1000, 'unixepoch', 'localtime') = date('now', 'localtime')")
+    @Query("SELECT SUM(total) FROM transaksi WHERE date(tanggal/1000, 'unixepoch', 'localtime') = date('now', 'localtime') AND metode NOT LIKE 'HUTANG_LUNAS%'")
     fun getTotalHariIni(): Long?
 
     @Query("SELECT * FROM detail_transaksi WHERE transaksiId IN (SELECT id FROM transaksi WHERE date(tanggal/1000, 'unixepoch', 'localtime') = date('now', 'localtime'))")
     fun getDetailTransaksiHariIni(): List<DetailTransaksi>
 
-    @Query("SELECT COUNT(*) FROM transaksi WHERE date(tanggal/1000, 'unixepoch', 'localtime') = date('now', 'localtime')")
+    @Query("SELECT COUNT(*) FROM transaksi WHERE date(tanggal/1000, 'unixepoch', 'localtime') = date('now', 'localtime') AND metode NOT LIKE 'HUTANG_LUNAS%'")
     fun getCountTransaksiHariIni(): Int?
 
     @Query("SELECT SUM(jumlah) FROM detail_transaksi WHERE transaksiId IN (SELECT id FROM transaksi WHERE date(tanggal/1000, 'unixepoch', 'localtime') = date('now', 'localtime'))")
@@ -118,10 +129,16 @@ interface TransaksiDao {
     @Query("SELECT * FROM transaksi ORDER BY tanggal DESC")
     fun getAllTransaksi(): List<Transaksi>
 
+    @Query("SELECT COALESCE(SUM(total), 0) FROM transaksi WHERE metode = 'QRIS' OR metode = 'HUTANG_LUNAS_QRIS'")
+    fun getSaldoDigital(): Long
+
+    @Query("SELECT * FROM transaksi WHERE metode = 'QRIS' OR metode = 'HUTANG_LUNAS_QRIS' ORDER BY tanggal DESC")
+    fun getTransaksiDigital(): List<Transaksi>
+
     @Query("SELECT * FROM hutang ORDER BY jatuhTempo ASC")
     fun getAllHutang(): List<Hutang>
 
-    @Query("SELECT SUM(total) as total, date(tanggal/1000, 'unixepoch', 'localtime') as tanggal FROM transaksi GROUP BY date(tanggal/1000, 'unixepoch', 'localtime') ORDER BY tanggal DESC LIMIT 7")
+    @Query("SELECT SUM(total) as total, date(tanggal/1000, 'unixepoch', 'localtime') as tanggal FROM transaksi WHERE metode NOT LIKE 'HUTANG_LUNAS%' GROUP BY date(tanggal/1000, 'unixepoch', 'localtime') ORDER BY tanggal DESC LIMIT 7")
     fun getSalesLast7Days(): List<SalesData>
 
     @Query("SELECT * FROM barang WHERE stok <= 5")
@@ -132,6 +149,20 @@ interface TransaksiDao {
 
     @Update
     suspend fun updateHutang(hutang: Hutang)
+
+    @Transaction
+    suspend fun settleDebt(hutang: Hutang, paymentMethod: String) {
+        require(!hutang.lunas) { "Hutang sudah lunas" }
+        require(paymentMethod == "CASH" || paymentMethod == "QRIS") { "Metode pelunasan tidak valid" }
+        updateHutang(hutang.copy(lunas = true))
+        insertTransaksi(
+            Transaksi(
+                tanggal = System.currentTimeMillis(),
+                total = hutang.jumlah,
+                metode = "HUTANG_LUNAS_$paymentMethod"
+            )
+        )
+    }
 
     @Query("SELECT * FROM transaksi ORDER BY tanggal DESC LIMIT 5")
     fun getRecentTransactions(): List<Transaksi>

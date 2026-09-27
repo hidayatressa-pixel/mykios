@@ -49,6 +49,8 @@ class SplashActivity : AppCompatActivity() {
         // Delay 2.5 detik untuk transisi halus
         Handler(Looper.getMainLooper()).postDelayed({
             val session = SessionManager(this)
+            // Fresh installs must always follow the normal welcome/register flow.
+            // Never seed a registered debug account from the launcher.
             val intent = when {
                 session.isRegistered() -> {
                     NotificationHelper(this).showWelcomeMessage(session.isPro())

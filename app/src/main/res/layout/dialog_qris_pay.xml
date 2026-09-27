@@ -10,7 +10,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="QRIS DINAMIS"
+        android:text="QRIS Dinamis"
         android:textAppearance="?attr/textAppearanceTitleLarge"
         android:textStyle="bold" />
 
@@ -28,7 +28,7 @@
         android:layout_width="280dp"
         android:layout_height="280dp"
         android:layout_marginTop="20dp"
-        android:background="@android:color/white"
+        android:background="@color/surface"
         android:padding="8dp" />
 
     <TextView
@@ -45,7 +45,8 @@
         android:layout_width="match_parent"
         android:layout_height="56dp"
         android:layout_marginTop="24dp"
-        android:text="KONFIRMASI PEMBAYARAN"
-        app:cornerRadius="12dp" />
+        android:text="Konfirmasi Pembayaran"
+        android:textAllCaps="false"
+        app:cornerRadius="16dp" />
 
 </LinearLayout>

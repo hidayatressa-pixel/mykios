@@ -7,7 +7,7 @@
     app:cardCornerRadius="20dp"
     app:cardElevation="0dp"
     app:cardBackgroundColor="@color/dangerContainer"
-    app:strokeColor="#10EF4444"
+    app:strokeColor="@color/danger"
     app:strokeWidth="1dp">
 
     <LinearLayout
@@ -23,7 +23,7 @@
             android:ellipsize="end"
             android:maxLines="2"
             android:text="Nama Barang"
-            android:textColor="#B91C1C"
+            android:textColor="@color/danger"
             android:textAppearance="?attr/textAppearanceLabelMedium"
             android:textStyle="bold" />
 
@@ -33,7 +33,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="6dp"
             android:text="Sisa: 0"
-            android:textColor="#EF4444"
+            android:textColor="@color/danger"
             android:textStyle="bold"
             android:textSize="11sp" />
 

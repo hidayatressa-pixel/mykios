@@ -1,31 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="primary">#818CF8</color>
-    <color name="onPrimary">#0F172A</color>
-    <color name="primaryContainer">#1E1B4B</color>
-    <color name="onPrimaryContainer">#E0E7FF</color>
+    <!-- MYKIOS Premium Dark Navy: medium depth, not black and not bright blue -->
+    <color name="primary">#8B8CFF</color>
+    <color name="onPrimary">#18213A</color>
+    <color name="primaryContainer">#2A3554</color>
+    <color name="onPrimaryContainer">#EEF0FF</color>
 
-    <color name="secondary">#A78BFA</color>
-    <color name="onSecondary">#0F172A</color>
-    <color name="secondaryContainer">#2E1065</color>
-    <color name="onSecondaryContainer">#F5F3FF</color>
+    <color name="secondary">#7DA6E8</color>
+    <color name="onSecondary">#15233B</color>
+    <color name="secondaryContainer">#263B59</color>
+    <color name="onSecondaryContainer">#EAF2FF</color>
 
-    <color name="background">#0B0F1A</color>
-    <color name="onBackground">#F8FAFC</color>
-    <color name="surface">#161E2E</color>
-    <color name="onSurface">#F8FAFC</color>
-    <color name="surfaceVariant">#1F2937</color>
-    <color name="onSurfaceVariant">#9CA3AF</color>
+    <color name="brand_navy">#263249</color>
+    <color name="brand_navy_light">#344159</color>
+    <color name="brand_indigo">#818CF8</color>
+    <color name="brand_blue">#7DA6E8</color>
+    <color name="brand_violet">#A78BFA</color>
 
-    <color name="text_primary">#F9FAFB</color>
-    <color name="text_secondary">#9CA3AF</color>
+    <color name="background">#121A2A</color>
+    <color name="onBackground">#F2F5FA</color>
+    <color name="surface">#1B263A</color>
+    <color name="onSurface">#F2F5FA</color>
+    <color name="surfaceVariant">#253249</color>
+    <color name="onSurfaceVariant">#AAB6C8</color>
+    <color name="surface_soft">#172235</color>
 
-    <color name="success">#34D399</color>
-    <color name="warning">#FBBF24</color>
-    <color name="danger">#F87171</color>
-    <color name="dangerContainer">#450A0A</color>
-    <color name="error">#F87171</color>
+    <color name="text_primary">#F1F5F9</color>
+    <color name="text_secondary">#AAB6C8</color>
+    <color name="text_muted">#93A1B5</color>
 
-    <color name="white">#FFFFFF</color>
-    <color name="divider">#374151</color>
+    <color name="success">#5DD6AD</color>
+    <color name="success_soft">#203D38</color>
+    <color name="warning">#F6C565</color>
+    <color name="warning_soft">#443922</color>
+    <color name="danger">#FF8585</color>
+    <color name="dangerContainer">#4A292E</color>
+    <color name="danger_soft">#42272C</color>
+    <color name="error">#FF8585</color>
+
+    <color name="white">#F4F6FA</color>
+    <color name="divider">#34425A</color>
+    <color name="outline_soft">#34425A</color>
 </resources>

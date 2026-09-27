@@ -23,12 +23,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:cardCornerRadius="20dp"
-            app:cardElevation="8dp">
+            app:cardElevation="0dp"
+            app:strokeColor="@color/outline_soft"
+            app:strokeWidth="1dp">
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@color/white"
+                android:background="@color/surface"
                 android:orientation="vertical"
                 android:padding="16dp">
 
@@ -49,7 +51,7 @@
                     android:maxWidth="200dp"
                     android:text="Halo! Yuk kita isi barang pertama warungmu agar kasir siap digunakan."
                     android:textAppearance="?attr/textAppearanceBodyLarge"
-                    android:textColor="#111827"
+                    android:textColor="@color/text_primary"
                     android:textStyle="bold" />
 
                 <com.google.android.material.button.MaterialButton

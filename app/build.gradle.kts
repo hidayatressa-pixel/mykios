@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.symbol.processing)
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -21,7 +22,7 @@ android {
             .orElse("")
             .get()
         buildConfigField("String", "REVENUECAT_API_KEY", "\"$revenueCatApiKey\"")
-        buildConfigField("String", "REVENUECAT_ENTITLEMENT", "\"pro\"")
+        buildConfigField("String", "REVENUECAT_ENTITLEMENT", "\"my_kios_pro\"")
     }
 
     packaging {
@@ -107,6 +108,10 @@ dependencies {
     // RevenueCat subscription/entitlement SDK. Galaxy Store support can be enabled
     // with purchases-store-galaxy once the Galaxy app/API key is configured.
     implementation("com.revenuecat.purchases:purchases:10.15.1")
+
+    implementation(platform("com.google.firebase:firebase-bom:34.7.0"))
+    implementation("com.google.firebase:firebase-auth")
+    implementation("com.google.firebase:firebase-firestore")
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

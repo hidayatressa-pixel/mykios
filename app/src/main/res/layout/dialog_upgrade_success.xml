@@ -29,7 +29,7 @@
             android:text="🎉 SELAMAT! 🎉"
             android:textSize="24sp"
             android:textStyle="bold"
-            android:textColor="#6200EE" />
+            android:textColor="@color/primary" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -37,13 +37,13 @@
             android:layout_marginTop="4dp"
             android:text="Anda Kini Member PRO"
             android:textSize="18sp"
-            android:textColor="#444" />
+            android:textColor="@color/text_primary" />
 
         <View
             android:layout_width="80dp"
             android:layout_height="4dp"
             android:layout_marginVertical="20dp"
-            android:background="#6200EE" />
+            android:background="@color/primary" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -57,20 +57,20 @@
                 android:text="💎 Laporan Eksklusif"
                 android:textSize="15sp"
                 android:layout_marginBottom="10dp"
-                android:textColor="#555" />
+                android:textColor="@color/text_secondary" />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="💎 Fitur AI Engine"
                 android:textSize="15sp"
                 android:layout_marginBottom="10dp"
-                android:textColor="#555" />
+                android:textColor="@color/text_secondary" />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="💎 Bebas Iklan Selamanya"
                 android:textSize="15sp"
-                android:textColor="#555" />
+                android:textColor="@color/text_secondary" />
         </LinearLayout>
 
         <com.google.android.material.button.MaterialButton
@@ -82,8 +82,8 @@
             android:textSize="16sp"
             android:textStyle="bold"
             app:cornerRadius="18dp"
-            android:backgroundTint="#6200EE"
-            android:textColor="@android:color/white" />
+            android:backgroundTint="@color/primary"
+            android:textColor="@color/onPrimary" />
 
     </LinearLayout>
 </androidx.cardview.widget.CardView>

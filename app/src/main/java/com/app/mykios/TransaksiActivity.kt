@@ -49,6 +49,15 @@ class TransaksiActivity : BaseActivity() {
     private lateinit var printerHelper: BluetoothPrinterHelper
     private var pendingPrinterItems: List<Pair<Barang, Int>>? = null
 
+    private val scannerLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        if (result.resultCode == RESULT_OK) {
+            val code = result.data?.getStringExtra(ScannerActivity.EXTRA_SCAN_RESULT)
+            if (!code.isNullOrBlank()) {
+                findViewById<EditText>(R.id.searchBarang).setText(code)
+            }
+        }
+    }
+
     private val bluetoothPermissionLauncher =
         registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { result ->
             val connectGranted = android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.S ||
@@ -99,7 +108,10 @@ class TransaksiActivity : BaseActivity() {
 
         val tilSearch = findViewById<com.google.android.material.textfield.TextInputLayout>(R.id.tilSearch)
         tilSearch.setEndIconOnClickListener {
-            startActivityForResult(Intent(this, ScannerActivity::class.java), 1001)
+            scannerLauncher.launch(
+                Intent(this, ScannerActivity::class.java)
+                    .putExtra(ScannerActivity.EXTRA_MODE, ScannerActivity.MODE_CASHIER)
+            )
         }
         
         tilSearch.setStartIconOnClickListener {
@@ -190,16 +202,6 @@ class TransaksiActivity : BaseActivity() {
         }
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == 1001 && resultCode == RESULT_OK) {
-            val code = data?.getStringExtra("SCAN_RESULT")
-            if (!code.isNullOrEmpty()) {
-                findViewById<EditText>(R.id.searchBarang).setText(code)
-            }
-        }
-    }
-
     private fun setupWatchers() {
         etDiskon.addTextChangedListener(CurrencyTextWatcher(etDiskon) {
             updateCalculations()
@@ -259,27 +261,33 @@ class TransaksiActivity : BaseActivity() {
             else -> "CASH"
         }
 
+        val itemsForNota = keranjangMap.mapNotNull { (id, qty) ->
+            listBarangData.find { it.id == id }?.let { it to qty }
+        }
+        if (itemsForNota.size != keranjangMap.size) {
+            Toast.makeText(this, "Ada barang yang sudah tidak tersedia. Muat ulang stok.", Toast.LENGTH_LONG).show()
+            loadBarang()
+            return
+        }
+
+        when (metode) {
+            "QRIS" -> showQrisConfirmationDialog(itemsForNota, totalAkhir)
+            "Hutang" -> showCreditCustomerDialog(itemsForNota)
+            else -> commitSale(itemsForNota, metode)
+        }
+    }
+
+    private fun commitSale(items: List<Pair<Barang, Int>>, metode: String, hutang: Hutang? = null) {
         btnSimpan.isEnabled = false
         lifecycleScope.launch(Dispatchers.IO) {
             try {
-                val itemsForNota = keranjangMap.mapNotNull { (id, qty) ->
-                    listBarangData.find { it.id == id }?.let { it to qty }
-                }
-                if (itemsForNota.size != keranjangMap.size) {
-                    throw IllegalStateException("Ada barang yang sudah tidak tersedia. Muat ulang stok.")
-                }
-
-                val transaksiId = db.transaksiDao().createSale(
-                    Transaksi(tanggal = System.currentTimeMillis(), total = totalAkhir, metode = metode),
-                    itemsForNota
-                )
-
+                val transaksi = Transaksi(tanggal = System.currentTimeMillis(), total = totalAkhir, metode = metode)
+                val transaksiId = if (hutang == null) db.transaksiDao().createSale(transaksi, items)
+                    else db.transaksiDao().createCreditSale(transaksi, items, hutang)
                 withContext(Dispatchers.Main) {
                     if (metode == "QRIS") {
-                        showQrisGeneratorDialog(transaksiId, itemsForNota, totalAkhir)
-                    } else {
-                        showActionDialog(transaksiId, itemsForNota, metode)
-                    }
+                        showPreviewNotaDialog(transaksiId, items, metode)
+                    } else showActionDialog(transaksiId, items, metode)
                 }
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
@@ -291,29 +299,56 @@ class TransaksiActivity : BaseActivity() {
         }
     }
 
-    private fun showQrisGeneratorDialog(transaksiId: Long, items: List<Pair<Barang, Int>>, amount: Int) {
-        val dialogView = layoutInflater.inflate(R.layout.dialog_qris_pay, null)
-        val ivQris = dialogView.findViewById<android.widget.ImageView>(R.id.ivGeneratedQris)
-        val tvAmount = dialogView.findViewById<TextView>(R.id.tvQrisAmount)
-        val btnConfirm = dialogView.findViewById<android.widget.Button>(R.id.btnKonfirmasiBayar)
-
-        tvAmount.text = "Total: ${CurrencyUtils.formatRupiah(amount)}"
-        
-        val qrisBmp = BarcodeUtils.generateQris(this, amount)
-        ivQris.setImageBitmap(qrisBmp)
-
-        val dialog = MaterialAlertDialogBuilder(this)
-            .setView(dialogView)
-            .setCancelable(false)
-            .create()
-
-        btnConfirm.setOnClickListener {
-            val session = SessionManager(this)
-            session.addSaldoDigital(amount) // Add to wallet
-            dialog.dismiss()
-            showPreviewNotaDialog(transaksiId, items, "QRIS")
+    private fun showQrisConfirmationDialog(items: List<Pair<Barang, Int>>, amount: Int) {
+        val qrisPath = SessionManager(this).getQrisPath()
+        if (qrisPath.isNullOrBlank()) {
+            Toast.makeText(this, "Upload QRIS merchant terlebih dahulu.", Toast.LENGTH_LONG).show()
+            return
         }
+        val bitmap = android.graphics.BitmapFactory.decodeFile(qrisPath)
+        if (bitmap == null) {
+            Toast.makeText(this, "QRIS merchant tidak dapat dibaca. Upload ulang QRIS.", Toast.LENGTH_LONG).show()
+            return
+        }
+        val dialogView = layoutInflater.inflate(R.layout.dialog_qris_pay, null)
+        dialogView.findViewById<android.widget.ImageView>(R.id.ivGeneratedQris).setImageBitmap(bitmap)
+        dialogView.findViewById<TextView>(R.id.tvQrisAmount).text = "Total: " + CurrencyUtils.formatRupiah(amount)
+        val btnConfirm = dialogView.findViewById<android.widget.Button>(R.id.btnKonfirmasiBayar)
+        val dialog = MaterialAlertDialogBuilder(this)
+            .setTitle("Konfirmasi Pembayaran QRIS")
+            .setMessage("Pastikan notifikasi pembayaran merchant sudah diterima sebelum konfirmasi.")
+            .setView(dialogView).setNegativeButton("Batal", null).create()
+        btnConfirm.setOnClickListener { dialog.dismiss(); commitSale(items, "QRIS") }
+        dialog.show()
+    }
 
+    private fun showCreditCustomerDialog(items: List<Pair<Barang, Int>>) {
+        val container = android.widget.LinearLayout(this).apply {
+            orientation = android.widget.LinearLayout.VERTICAL
+            setPadding(48, 16, 48, 0)
+        }
+        val nameInput = EditText(this).apply { hint = "Nama pelanggan" }
+        val phoneInput = EditText(this).apply { hint = "Nomor WhatsApp"; inputType = android.text.InputType.TYPE_CLASS_PHONE }
+        container.addView(nameInput); container.addView(phoneInput)
+        val dialog = MaterialAlertDialogBuilder(this)
+            .setTitle("Data Pelanggan Hutang")
+            .setMessage("Hutang akan tercatat otomatis setelah transaksi berhasil.")
+            .setView(container).setPositiveButton("Simpan", null).setNegativeButton("Batal", null).create()
+        dialog.setOnShowListener {
+            dialog.getButton(androidx.appcompat.app.AlertDialog.BUTTON_POSITIVE).setOnClickListener {
+                val name = nameInput.text.toString().trim()
+                var phone = phoneInput.text.toString().replace("[^0-9]".toRegex(), "")
+                if (phone.startsWith("0")) phone = "62" + phone.substring(1)
+                if (name.isBlank() || phone.isBlank()) {
+                    Toast.makeText(this, "Nama dan nomor WhatsApp wajib diisi.", Toast.LENGTH_SHORT).show()
+                    return@setOnClickListener
+                }
+                val now = System.currentTimeMillis()
+                val due = java.util.Calendar.getInstance().apply { timeInMillis = now; add(java.util.Calendar.DAY_OF_YEAR, 7) }.timeInMillis
+                dialog.dismiss()
+                commitSale(items, "Hutang", Hutang(namaPelanggan = name, nomorWa = phone, jumlah = totalAkhir, tanggalPinjam = now, jatuhTempo = due))
+            }
+        }
         dialog.show()
     }
 

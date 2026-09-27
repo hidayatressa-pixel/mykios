@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+
+    <!-- MYKIOS notification mark: compact monochrome MK bubble silhouette.
+         Android applies the notification tint automatically. -->
+    <path
+        android:fillColor="#FFFFFFFF"
+        android:pathData="M4,18.5 L4,7.4 C4,5.4 5.2,4.2 7,4.2 C8.5,4.2 9.5,5 10.2,6.5 L12,10.1 L13.8,6.5 C14.5,5 15.5,4.2 17,4.2 C18.8,4.2 20,5.4 20,7.4 L20,9.1 L17.2,12 L20.5,18.5 L17.2,18.5 L15.2,14.1 L14,15.3 L14,18.5 L11.2,18.5 L11.2,10.8 L9.4,14.2 L7.7,14.2 L6.8,12.5 L6.8,18.5 Z" />
+
+    <path
+        android:fillColor="#FFFFFFFF"
+        android:pathData="M21.6,19.1 A1.4,1.4 0,1 1,18.8 19.1 A1.4,1.4 0,1 1,21.6 19.1" />
+</vector>
