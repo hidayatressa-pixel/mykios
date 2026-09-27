@@ -193,7 +193,7 @@ class StokActivity : BaseActivity() {
 
         val options = arrayOf("Download Excel (CSV)", "Cetak Barcode Massal (PDF)", "Hubungkan Thermal Printer", "Hapus Semua Data Stok (Reset)")
         MaterialAlertDialogBuilder(this)
-            .setTitle("Toolbox Persediaan PRO")
+            .setTitle("Toolbox Persediaan")
             .setItems(options) { _, which ->
                 when (which) {
                     0 -> {
@@ -725,11 +725,27 @@ class StokActivity : BaseActivity() {
         val kategori = session.getKategori()
         
         val builder = MaterialAlertDialogBuilder(this)
-        builder.setTitle("Tambah Barang Baru")
+        builder.setTitle("Tambah Barang")
 
         val layout = LinearLayout(this)
         layout.orientation = LinearLayout.VERTICAL
-        layout.setPadding(60, 24, 60, 24)
+        layout.setPadding(52, 20, 52, 12)
+
+        val header = TextView(this).apply {
+            text = "Produk baru"
+            textSize = 20f
+            setTypeface(typeface, android.graphics.Typeface.BOLD)
+            setTextColor(com.google.android.material.color.MaterialColors.getColor(this, com.google.android.material.R.attr.colorOnSurface))
+            setPadding(0, 0, 0, 6)
+        }
+        val helper = TextView(this).apply {
+            text = "Lengkapi informasi utama barang. Data ini akan dipakai di stok dan transaksi."
+            textSize = 12f
+            setTextColor(com.google.android.material.color.MaterialColors.getColor(this, com.google.android.material.R.attr.colorOnSurfaceVariant))
+            setPadding(0, 0, 0, 18)
+        }
+        layout.addView(header)
+        layout.addView(helper)
 
         val inputNama = TextInputEditText(this)
         inputNama.hint = "Nama Barang"
