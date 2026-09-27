@@ -44,7 +44,7 @@ class SessionManager(context: Context) {
 
     // Existing PRO flavor remains supported during migration. Subscription PRO is only
     // updated after RevenueCat returns a verified CustomerInfo entitlement.
-    fun isPro(): Boolean = BuildConfig.MYKIOS_PRO_EDITION || prefs.getBoolean("revenuecat_pro_active", false) || (BuildConfig.DEBUG && prefs.getBoolean("debug_admin_pro", false))
+    fun isPro(): Boolean = BuildConfig.MYKIOS_PRO_EDITION || prefs.getBoolean("revenuecat_pro_active", false)
     fun setRevenueCatPro(active: Boolean) = prefs.edit().putBoolean("revenuecat_pro_active", active).apply()
     fun isDev(): Boolean = prefs.getBoolean("is_dev", false)
     fun getKategori(): String = prefs.getString("kategori_usaha", "Sembako") ?: "Sembako"
@@ -94,7 +94,7 @@ class SessionManager(context: Context) {
             .putString("kategori_usaha", "Photokopi ATK")
             .putString("app_password", "v1:120000:tXzoS/l+G8z/WdtVa6DOJA==:jnedG1zuI9pq8TnL6xM240ezoj3CyPAcp25zQ9OmvCg=")
             .putString("user_role", "ADMIN")
-            .putBoolean("debug_admin_pro", true)
+            .remove("debug_admin_pro")
             .putBoolean("is_registered", true)
             .putBoolean("after_project_debug_admin_v1", true)
             .putLong("registration_timestamp", System.currentTimeMillis())
