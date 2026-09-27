@@ -95,19 +95,19 @@ interface TransaksiDao {
         return transaksiId
     }
 
-    @Query("SELECT SUM(total) FROM transaksi WHERE tanggal >= :start AND tanggal <= :end AND metode != 'HUTANG_LUNAS'")
+    @Query("SELECT SUM(total) FROM transaksi WHERE tanggal >= :start AND tanggal <= :end AND metode NOT LIKE 'HUTANG_LUNAS%'")
     fun getTotalRange(start: Long, end: Long): Long?
 
     @Query("SELECT * FROM detail_transaksi WHERE transaksiId IN (SELECT id FROM transaksi WHERE tanggal >= :start AND tanggal <= :end)")
     fun getDetailTransaksiRange(start: Long, end: Long): List<DetailTransaksi>
 
-    @Query("SELECT SUM(total) FROM transaksi WHERE date(tanggal/1000, 'unixepoch', 'localtime') = date('now', 'localtime') AND metode != 'HUTANG_LUNAS'")
+    @Query("SELECT SUM(total) FROM transaksi WHERE date(tanggal/1000, 'unixepoch', 'localtime') = date('now', 'localtime') AND metode NOT LIKE 'HUTANG_LUNAS%'")
     fun getTotalHariIni(): Long?
 
     @Query("SELECT * FROM detail_transaksi WHERE transaksiId IN (SELECT id FROM transaksi WHERE date(tanggal/1000, 'unixepoch', 'localtime') = date('now', 'localtime'))")
     fun getDetailTransaksiHariIni(): List<DetailTransaksi>
 
-    @Query("SELECT COUNT(*) FROM transaksi WHERE date(tanggal/1000, 'unixepoch', 'localtime') = date('now', 'localtime') AND metode != 'HUTANG_LUNAS'")
+    @Query("SELECT COUNT(*) FROM transaksi WHERE date(tanggal/1000, 'unixepoch', 'localtime') = date('now', 'localtime') AND metode NOT LIKE 'HUTANG_LUNAS%'")
     fun getCountTransaksiHariIni(): Int?
 
     @Query("SELECT SUM(jumlah) FROM detail_transaksi WHERE transaksiId IN (SELECT id FROM transaksi WHERE date(tanggal/1000, 'unixepoch', 'localtime') = date('now', 'localtime'))")
