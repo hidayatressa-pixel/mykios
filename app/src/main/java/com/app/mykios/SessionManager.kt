@@ -66,8 +66,6 @@ class SessionManager(context: Context) {
     fun isDarkMode(): Boolean = prefs.getBoolean("dark_mode", false)
     fun setQrisPath(path: String) { prefs.edit().putString("qris_path", path).apply() }
     fun getQrisPath(): String? = prefs.getString("qris_path", null)
-    fun getSaldoDigital(): Int = prefs.getInt("saldo_digital", 0)
-    fun addSaldoDigital(amount: Int) { prefs.edit().putInt("saldo_digital", getSaldoDigital() + amount).apply() }
 
     fun setPin(pin: String?) {
         val value = pin?.takeIf { it.isNotBlank() }?.let(SecurityUtils::hashSecret)
