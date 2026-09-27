@@ -100,25 +100,41 @@ class HutangActivity : BaseActivity() {
     }
 
     private fun confirmHutangLunas(hutang: Hutang) {
+        val methods = mutableListOf("Tunai" to "CASH")
+        if (!SessionManager(this).getQrisPath().isNullOrBlank()) {
+            methods += "QRIS" to "QRIS"
+        }
+
         MaterialAlertDialogBuilder(this)
-            .setTitle("Konfirmasi Pelunasan")
-            .setMessage("Apakah hutang dari ${hutang.namaPelanggan} sebesar ${CurrencyUtils.formatRupiah(hutang.jumlah)} sudah dibayar lunas?")
-            .setPositiveButton("Ya, Lunas") { _, _ ->
+            .setTitle("Pelunasan Hutang")
+            .setMessage("${hutang.namaPelanggan} • ${CurrencyUtils.formatRupiah(hutang.jumlah)}\nPilih metode pembayaran yang benar.")
+            .setItems(methods.map { it.first }.toTypedArray()) { _, which ->
+                val method = methods[which].second
                 lifecycleScope.launch(Dispatchers.IO) {
-                    db.transaksiDao().updateHutang(hutang.copy(lunas = true))
-                    db.transaksiDao().insertTransaksi(Transaksi(
-                        tanggal = System.currentTimeMillis(),
-                        total = hutang.jumlah,
-                        metode = "HUTANG_LUNAS"
-                    ))
-                    
-                    withContext(Dispatchers.Main) {
-                        Toast.makeText(this@HutangActivity, "Hutang berhasil dilunasi & dicatat ke laporan", Toast.LENGTH_SHORT).show()
-                        loadHutang()
+                    try {
+                        db.transaksiDao().settleDebt(hutang, method)
+                        withContext(Dispatchers.Main) {
+                            val label = methods[which].first
+                            Toast.makeText(
+                                this@HutangActivity,
+                                "Hutang lunas via $label & pencatatan otomatis diperbarui",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                            loadHutang()
+                        }
+                    } catch (e: Exception) {
+                        withContext(Dispatchers.Main) {
+                            Toast.makeText(
+                                this@HutangActivity,
+                                e.message ?: "Pelunasan gagal",
+                                Toast.LENGTH_LONG
+                            ).show()
+                            loadHutang()
+                        }
                     }
                 }
             }
-            .setNegativeButton("Belum", null)
+            .setNegativeButton("Batal", null)
             .show()
     }
 
