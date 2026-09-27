@@ -58,6 +58,20 @@ class SessionManager(context: Context) {
     }
     fun isRegistered(): Boolean = prefs.getBoolean("is_registered", false)
 
+    fun saveCloudAccount(namaToko: String, namaPemilik: String, kategori: String, role: String) {
+        prefs.edit()
+            .putString("nama_toko", namaToko)
+            .putString("nama_pemilik", namaPemilik)
+            .putString("kategori_usaha", kategori)
+            .putString("user_role", role.uppercase())
+            .putBoolean("is_dev", false)
+            .putBoolean("is_registered", true)
+            .putLong("registration_timestamp", System.currentTimeMillis())
+            .apply()
+    }
+
+    fun hasFullAccess(): Boolean = getRole() == "ADMIN" || isPro()
+
     fun logout() { prefs.edit().clear().apply() }
     fun setLanguage(lang: String) { prefs.edit().putString("lang", lang).putBoolean("is_lang_set", true).apply() }
     fun isLanguageSet(): Boolean = prefs.getBoolean("is_lang_set", false)
