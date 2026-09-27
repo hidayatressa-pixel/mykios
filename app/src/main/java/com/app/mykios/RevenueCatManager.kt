@@ -49,6 +49,10 @@ object RevenueCatManager {
         onCancelled: () -> Unit = {},
         onError: (String) -> Unit = {}
     ) {
+        if (!isConfigured()) {
+            onError("RevenueCat belum dikonfigurasi pada build ini.")
+            return
+        }
         Purchases.sharedInstance.purchaseWith(
             PurchaseParams.Builder(activity, packageToPurchase).build(),
             onError = { error, userCancelled ->
