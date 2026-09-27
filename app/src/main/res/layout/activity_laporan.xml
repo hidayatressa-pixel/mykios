@@ -157,7 +157,7 @@
                 android:id="@+id/btnExportExcel"
                 android:layout_width="match_parent"
                 android:layout_height="54dp"
-                android:text="Export Laporan (PRO)"
+                android:text="Export Laporan"
                 android:textAllCaps="false"
                 android:textStyle="bold"
                 app:backgroundTint="@color/primary"
